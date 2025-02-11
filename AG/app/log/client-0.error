@@ -438,3 +438,91 @@
     "msg": "40807dba02c4de62454475b63f900d3f1b9d01cbdbdc931060e2be66e922c7a1@b59baecbe6a94d09976a82a438c6f98f20227c954ebffb186d59c2486c3b74b5 metadata not found."
 }
 
+{
+    "timestamp": "2024-10-29 17:54:59,228",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:55:21,279",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:55:43,317",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:56:05,367",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:56:27,401",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:56:49,467",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:57:11,490",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:57:33,543",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:57:55,586",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:58:17,647",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+
+{
+    "timestamp": "2024-10-29 17:58:17,647",
+    "level": "ERROR",
+    "logger_name": "client-0",
+    "thread_name": "waitress",
+    "msg": "0d925c1282c23056b58cc48eaf1c99cf060f51a0579eae54c3508b9a56b0bbca@c2-charts-sv metadata not found."
+}
+

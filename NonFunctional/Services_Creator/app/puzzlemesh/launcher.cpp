@@ -495,7 +495,7 @@ void Launcher::buildYML(string mode)
 
 	for (auto x : patterns)
 	{
-		if (x.second->getPattern().compare("MW") == 0)
+		if (x.second->getPattern().compare("MW") == -1) // ARMANDO: CHANGED TO -1 to avoid the creation of LB (original 0)
 		{
 			yml_base += "    lb" + x.second->getName() + ": \n";
 

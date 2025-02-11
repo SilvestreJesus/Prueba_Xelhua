@@ -65,7 +65,6 @@ TIMES_list = {}
 #select load blaancer
 Tolerant_errors=0 #total of errors that can be tolarated
 ACCEPTORS_LIST= dictionary['paxos']["accepters"]
-LOGER.info(ACCEPTORS_LIST)
 PROPOSER = Paxos(ACCEPTORS_LIST)
 
 FS = FSController(LOGER=LOGER,CLOUD=STORAGE_CLIENT,REMOTE_STORAGE=REMOTE_STORAGE,clt_paxos=PROPOSER)
@@ -341,11 +340,11 @@ def deploy_resources():
                 "id_stack": RN,
                 "mode":"compose",
                 "engine":"nez",
-                "replicas": 2})
+                "replicas": 1})
         LOGER.info("---------------------------- DEPLOYED")
 
         TIMES_list[RN]['deploy'] = time.time() - temp
-        time.sleep(.5)
+        time.sleep(2)
         response = make_response({"status":"OK","message":"solution deployed",'token_solution':RN,"dag":res['DAG']},200)    
     else:
         response = make_response({"status":"OK","message":"No more nodes needed",'token_solution':RN,"dag":res['DAG']},200)    

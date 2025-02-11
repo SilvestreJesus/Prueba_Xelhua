@@ -83,8 +83,7 @@ def ClientProcess(metadata,data_acq_time):
     LOGER.error("====== INDEXING RESULTS : %s" %index_opt)
 
 
-    if 'actions' in DAG:
-        #check if is list
+    if 'actions' in DAG: #check if is list
         if type(DAG['actions']) is list:
             actions = DAG['actions']
         else:

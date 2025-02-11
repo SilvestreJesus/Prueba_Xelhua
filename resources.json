@@ -5,7 +5,7 @@
     "API_GATEWAY": "coordinator:5555",
     "SERVICE_PORT": "80",
     
-    "STORAGE_OPT":"MICTLAN",
+    "STORAGE_OPT":"LOCAL",
     "MICTLANX_PROTOCOL":"http",
     "MICTLANX_ROUTERS":"mictlanx-router-0:148.247.201.141:60667"
   },

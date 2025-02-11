@@ -10,7 +10,7 @@ import copy
 from waitress import serve
 import multiprocessing as mp
 import requests
-
+from os import getenv
 import hashlib
 from datetime import datetime
 from db_handler import Handler
@@ -27,6 +27,7 @@ LOG = logging.getLogger()
 
 BRANCHES = dict() #dict of all the REQUEST
 VISUAL = dict() #dict of all visual metadata
+SESSIONS = dict() 
 
 app = Flask(__name__)
 ACTUAL_VALUE = 0
@@ -62,6 +63,30 @@ LOAD_B = loadbalancer(dictionary)
 }
 
 """
+
+def ManageSessions(action,key,value):
+    response = {"status":"OK","action":"ACCEPT","value":{}}
+
+    if action == 'create':
+        SESSIONS[key] = value
+    elif action == 'delete':
+        del SESSIONS[key]
+    elif action == 'get':
+
+        if key in SESSIONS:
+            response['value'] = SESSIONS[key]
+        else:
+            response['status'] = "ERROR"
+            response['value'] = None
+
+    LOG.info(SESSIONS)
+    return response
+
+####
+#default key
+ManageSessions('create',getenv("API_KEY"), {"expiration_date":None,"API_key":True,"tokenuser":getenv("API_KEY")})
+####
+
 
 def GetCurrentTimeAction():
     return datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -428,7 +453,7 @@ def verify_abox_process(token_solution,task_id):
     key_list = validate_key_list(task_id)
     is_the_same_process= False
     #verify if task exist
-    #LOG.info(task_id)
+    LOG.info(task_id)
     if task_id in BRANCHES[token_solution][key_list]:
 
         task_parent_id = BRANCHES[token_solution][key_list][task_id]['parent']
@@ -437,8 +462,8 @@ def verify_abox_process(token_solution,task_id):
         parent_products = BRANCHES[token_solution][key_list][task_parent_id]['products_fingerprint']
         task_products = BRANCHES[token_solution][key_list][task_id]['products_fingerprint']
 
-        LOG.debug("PARENT HASH: %s" %(parent_products['output'] ) )
-        LOG.debug("TASK SOURCE HASH: %s" %(task_products['input'] ) )
+        #LOG.info("PARENT HASH: %s" %(parent_products['output'] ) )
+        #LOG.info("TASK SOURCE HASH: %s" %(task_products['input'] ) )
 
         for source in task_products['input']:
             if source in parent_products['output']:
@@ -447,7 +472,9 @@ def verify_abox_process(token_solution,task_id):
                 is_the_same_process = False
                 break
 
-    #else: #task not exist. its new. it has been added
+    else: 
+        LOG.info("TASK NOT EXIST THAT WHY IS HAPPENIKNG")
+        #task not exist. its new. it has been added
 
     return is_the_same_process
 
@@ -1086,7 +1113,14 @@ def prepare_request():
         res = verify_list_abox_process(value["token_solution"],value["task_list"])
         return json.dumps({"status":"OK","action":"ACCEPT","value":{"task_list":res}})
         
-
+    elif action == "SESSION":
+        params = params['value']
+        key = params['key']
+        value = params['value']
+        action = params['action']
+        res = ManageSessions(action,key,value)
+        
+        return json.dumps(res)
     else:
         return {"status":"ERROR","value":"Something happend"}
 

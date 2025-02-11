@@ -8,22 +8,31 @@ import requests as api
 import json
 import datetime
 import os
+from Proposer import Paxos
 
 IP_AUTH_SERVICE = "auth"
 TOKEN_ORG = "ed4ade2b846402b9ae56c75e1df923c71a1a081a339dccb7fa9d2c22194ddaff" #token de xelhua
-
 TOKEN_REQUIERD=os.getenv("TOKEN_REQUIERD") 
-API_KEY=os.getenv("API_KEY") # sha256 hash (eg. "9aa491c85508cfeead30c569c88c8f26e3881792a3f158a323ee9ac6150ab1cd") 
+
 interval_expiration = 60*48 #60 minutes * 48 hours = 2 days
 
+# DEBO ALMACENAR LAS SESIOENS EN LA MEMORIA DISTRIBUIDA
+#SESSIONS = {API_KEY:{"expiration_date":None,"API_key":True,"tokenuser":API_KEY}} 
+#{"access_token":"{expiration_date","tokenuser","API_key":true}}
 
-SESSIONS = {API_KEY:{"expiration_date":None,"API_key":True,"tokenuser":API_KEY}} #{"access_token":"{expiration_date","tokenuser","API_key":true}}
+# Client for Paxos Distributed Memory
+with open('coordinator_structure.json') as json_file:
+    dictionary = json.load(json_file) #read all configurations for services
+ACCEPTORS_LIST= dictionary['paxos']["accepters"]
+PROPOSER = Paxos(ACCEPTORS_LIST)
 
 
 if TOKEN_REQUIERD =="True" or TOKEN_REQUIERD =="TRUE" or TOKEN_REQUIERD =="true":
     TOKEN_REQUIERD = True
 else:
     TOKEN_REQUIERD = False
+
+
 
 # Authentication decorator
 def data_autorization_requiered(f):
@@ -198,7 +207,12 @@ def login_request(username,password):
         json_result =result.json()
         expiration_date = datetime.datetime.now() + datetime.timedelta(minutes=interval_expiration)
         LOG.info("la sesión expira en %s" %expiration_date)
-        SESSIONS[json_result['data']['access_token']] = {"expiration_date":expiration_date, "tokenuser":json_result['data']['tokenuser']}
+        
+        paxos_response = PROPOSER.DirectRequest({"action":"create","key":json_result['data']['access_token'],
+                                                 "value":{"expiration_date":expiration_date.isoformat(), 
+                                                          "tokenuser":json_result['data']['tokenuser']}},request="SESSION")
+        
+        LOG.info ("Sesion was created at paxos memory : %s" % paxos_response['status'])
     return make_response(jsonify(result.json()), result.status_code)
 
 def logout_request(tokenuser,access_token):
@@ -224,21 +238,28 @@ def register_user(username,email,password):
     return make_response(jsonify(result.json()), result.status_code)
 
 
-def verify_API_KEY(api_key):
-    if api_key in SESSIONS:
-        if "API_key" in SESSIONS[api_key]:
-            LOG.debug("API KEY USED ...")
+def verify_API_KEY(api_key,payload = None):
+    if payload is not None:
+        if api_key == payload["tokenuser"]:
+            return True
+        else:
+            return False
+    else:    
+        paxos_response = PROPOSER.DirectRequest({"action":"get","key":api_key,"value":{}},request="SESSION")
+        if paxos_response['status']=="OK":
             return True
 
 def verify_session_token(token):
-    if token not in SESSIONS:
+    paxos_response = PROPOSER.DirectRequest({"action":"get","key":token,"value":{}},request="SESSION")
+    if paxos_response['status']=="ERROR":
         return False
     else:
-        if verify_API_KEY(token):
+        session_info = paxos_response['value']
+        if verify_API_KEY(token,payload = session_info):
             return True
                 
-        expiration_date =SESSIONS[token]['expiration_date']
-        tokenuser= SESSIONS[token]['tokenuser']
+        expiration_date =datetime.datetime.fromisoformat(session_info['expiration_date'])
+        tokenuser= session_info['tokenuser']
 
         now = datetime.datetime.now() 
         LOG.info("now: %s"% now)
@@ -262,7 +283,7 @@ def update_access_token(accesstoken,tokenuser):
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     result = api.post(url, data=json.dumps(ToSend),headers=headers)
     LOG.debug(result.json())
-    del SESSIONS[accesstoken]
+    paxos_response = PROPOSER.DirectRequest({"action":"delete","key":accesstoken,"value":{}},request="SESSION")
     return True
 
 def getUserBy_access_token(access_token):

@@ -51,9 +51,8 @@
                 <label>Pattern</label>
                     <select id="patt-kind" required data-actions-box='true' class="form-control selectpicker" data-size="5" data-live-search="true" onchange="OptionsHandler(this)" required>
                       <option></option>        
-                      <option value="Map" >Map</option>
-                      <option value="Reduce" >Reduce</option>
-                      <option value="Chain" >Chain</option>
+                      <option value="Map" >Map Reduce</option>
+
                     </select>
                 </div>
 
@@ -75,20 +74,19 @@
                   </div>
 
 
-                <div class="form-group" opth opt-patt-kind="Reduce Chain">
+                <div class="form-group" opth opt-patt-kind="Map">
                       <div class="form-group col-12">
                         <label>Reduce mode</label>
                         <select id="patt-reduce_mode" required class="form-control selectpicker" data-size="5" data-live-search="true" required>
                           <option></option>        
-                          <option value="chunks">Chunks</option>
-                          <option value="fusion">Fusion</option>
+                          <option value="concat">Concat</option>
                           <option value="dummy">dummy</option>
                           </select>
                         </div>
 
                       </div>
 
-                <div class="form-group" opth opt-patt-kind="Reduce">
+                <div class="form-group" opth opt-patt-kind="Map">
 
                         <div class="form-group col-12">
                           <label>Levels to process: </label>
@@ -98,8 +96,8 @@
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
-                            <option value="all">all</option>
-
+                            <option value="5">5</option>
+                            <option value="6">6</option>
                             </select>
                         </div>
                     </div>

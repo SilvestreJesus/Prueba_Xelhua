@@ -1,13 +1,28 @@
 version: '2'
 services:
+
+  nginx_lb:
+    image: nginx:1.23-alpine  # Imagen ligera de Nginx
+    container_name: nginx_lb
+    volumes:
+      - ./LoadBalancer/nginx.template.conf:/etc/nginx/nginx.template.conf:ro
+      - ./LoadBalancer/docker-entrypoint.sh:/docker-entrypoint.sh:ro
+    environment:
+      - BACKENDS=coordinator:5555,coordinator2:5555
+    ports:
+      - "8085:80"
+    entrypoint: ["/bin/sh", "/docker-entrypoint.sh"]
+    networks:
+      - service_mesh
+
   xel_gui:  # Graphic user interface
     image: xel_gui:v2.0
     build:
       context: ./Frontend
       dockerfile: ./Dockerfile
     environment:      
-      XEL_IP: "coordinator" #for labs network
-      XEL_PORT: 5555 #for labs network
+      XEL_IP: "nginx_lb" #for labs network
+      XEL_PORT: 80 #for labs network
       GOOGLE_MAPS_KEY: "AIzaSyD_qWZ5Z3tHY5JqXksf19meBOmfAR1Wmw4"
     ports:
       - "8080:80"
@@ -19,6 +34,32 @@ services:
     mem_limit: 500M
     mem_reservation: 128M
     cpus: 1
+    deploy: 
+      placement: 
+        constraints: 
+          - node.role == manager
+  
+  coordinator2: # COORDINATOR
+    image: xel_coordinator:v2.0
+    build:
+      context: ./AG
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./localdata/LAKE/USERS:/home/app/SUPPLIES/ #Path for user's data
+      - ./localdata/LAKE/SOLUTIONS:/home/app/BACKUPS/ #Path for solutions's Data
+      - ./AG/app/:/home/app/ #for debugging and making changes without build image
+    restart: always
+    networks:
+      - service_mesh
+    env_file:
+      - AG.env
+    mem_limit: 1024M
+    mem_reservation: 128M
+    cpus: 4
+    depends_on:
+      - accepter_1
+      - accepter_2
+      - accepter_3
     deploy: 
       placement: 
         constraints: 
@@ -78,8 +119,8 @@ services:
     image: qwerty3435ab/auth:v2.0
     depends_on:
       - db_auth
-    #ports:
-    #  - '2023:80'
+    ports:
+      - '2023:80'
     expose:
       - "80"
     networks:
@@ -92,7 +133,7 @@ services:
       DB_PORT: 5432
       AUTH_PORT: 47011
       FRONTEND_PORT: 30004
-      SERVER_PORT: 30500
+      SERVER_PORT: 305000
     #volumes:
     #  - ./NonFunctional/auth/auth/:/var/www/html/ #for debug
     restart: always
@@ -184,6 +225,8 @@ services:
     restart: always
     networks:
       - service_mesh
+    env_file:
+      - AG.env
     volumes:
       - ./localdata/LAKE/METADATA:/home/app/METADATA #for debugging
 
@@ -201,6 +244,8 @@ services:
     restart: always
     networks:
       - service_mesh
+    env_file:
+      - AG.env
     volumes:
       - ./localdata/LAKE/METADATA:/home/app/METADATA #for debugging
 
@@ -218,6 +263,8 @@ services:
     restart: always
     networks:
       - service_mesh
+    env_file:
+      - AG.env
     volumes:
       - ./localdata/LAKE/METADATA:/home/app/METADATA #for debugging
       #- ./NonFunctional/Paxos/app:/home/app #for debugging
