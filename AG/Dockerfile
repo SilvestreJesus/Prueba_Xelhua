@@ -1,6 +1,6 @@
-FROM python:3.8.6-slim-buster
+FROM python:3.8-slim-bullseye
 
-WORKDIR home
+WORKDIR /home/
 
 #requierments for the mesh:
 COPY requirements.txt requirements.txt
@@ -11,7 +11,7 @@ RUN pip install dask
 #requierments for storage:
 RUN python -m pip install --upgrade pip
 RUN apt-get update
-RUN apt-get install libmagic1 -y
+RUN apt-get update && apt-get install -y libmagic1 && rm -rf /var/lib/apt/lists/*
 RUN pip install python-magic==0.4.27 && pip install nanoid
 RUN pip install chardet==5.2.0
 #RUN pip install -i https://test.pypi.org/simple/ mictlanx==0.0.29
