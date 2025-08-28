@@ -46,7 +46,7 @@ _Note: To install xelhua on Windows, it is recommended to use docker in conjunct
   ## 1.- Container images
   The Xelhua modules can be generated in 2 ways: By using the source code to build the images from scratch, or by using the published images.
 
-  a### A) To build the images, use the following command:
+  ### A) To build the images, use the following command:
   
   ```sh
   ./build.sh
