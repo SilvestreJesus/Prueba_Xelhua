@@ -56,7 +56,7 @@ _Note: To install xelhua on Windows, it is recommended to use docker in conjunct
   ```sh
   ./pull.sh
   ```
-  ## 2.- Configurtion
+  ## 2.- Configuration
 
 By default, you don't need to configure Xel to start using it, however, if you need to change any behavior of the platform, you need to review the documentation.
 
