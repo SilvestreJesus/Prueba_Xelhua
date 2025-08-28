@@ -46,7 +46,7 @@ _Note: To install xelhua on Windows, it is recommended to use docker in conjunct
   ## 1.- Container images
   The Xelhua modules can be generated in 2 ways: By using the source code to build the images from scratch, or by using the published images.
 
-  ### A) To build the images, use the following command:
+  a### A) To build the images, use the following command:
   
   ```sh
   ./build.sh
@@ -56,19 +56,31 @@ _Note: To install xelhua on Windows, it is recommended to use docker in conjunct
   ```sh
   ./pull.sh
   ```
-  ## 2.- Configuration
+  ## 2.- Configurtion
 
 By default, you don't need to configure Xel to start using it, however, if you need to change any behavior of the platform, you need to review the documentation.
 
   ## 3.- Deployment
 
+To deploy the project with **Docker Compose**, use the following command:
+
   ```sh
-  docker-compose up -f Xel.yml -d
+  docker-compose -f Xel.yml up -d
   ```
   or to see the lofs...
   ```sh
-  docker-compose up -f Xel.yml
+  docker-compose -f Xel.yml up 
   ```
+To stop the containers that were started, use the following command:
+
+  ```sh
+    docker-compose -f Xel.yml stop
+  ```
+To start containers that already exist but are stopped, use the following command:
+  ```sh
+    docker-compose -f Xel.yml start
+  ```
+
 
 Xelhua can also be deployed in a distributed environment by using [Docker-swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/), for this the following command is used.
 
