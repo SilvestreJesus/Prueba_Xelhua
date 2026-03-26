@@ -1,7 +1,7 @@
 
 # _Xel: an orchestation model for reliable and generic services_
 
-Xelhua (_Xel_) is a cloud-agnostic big data platform that faces the challenges of enabling end-users and organizations (at high-level and by using graphical design-driven schemes) to build high availability cloud agnostic analytics services without programming or configuring cloud computing and storage services. 
+Xelhua (_Xel_) is a cloud-agnostic big data platform that faces the challenges of enabling end-users and organizations (at high-level and by using graphical design-driven schemes) to build high availability cloud agnostic analytics services without programming or configuring cloud computing and storage services..
 
 - Create your own service repository.
 - Deploy your service repository in any kind of infrastructure, from local machines to cloud or multi-cloud.
@@ -285,3 +285,4 @@ This work has been partially supported by the project 41756 ``Plataforma tecnol√
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
+
