@@ -1,5 +1,5 @@
 from random import randint
-from random import seed
+from random from shared_components import Seed
 def roundRobin(totalResources,totalInputs):
     print("SE COORDINA CON ROUND ROBIN")
     coordinator = {}

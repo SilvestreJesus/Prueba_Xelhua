@@ -1,7 +1,7 @@
-import sys
+from shared_components import Sys
 import pandas as pd
 from pandas.errors import ParserError
-import seaborn as sns
+from shared_components import Seaborn as sns
 import logging
 import os
 import matplotlib.pyplot as plt

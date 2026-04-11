@@ -1,4 +1,4 @@
-import sys,json
+from shared_components import Sys,json
 import pandas as pd
 import os
 from random import randint
@@ -9,7 +9,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 LOGER = logging.getLogger()
 from os.path import basename
 import time
-import csv
+from shared_components import Csv
 
 def UncompressFile(path_compressfile,path_results):
     """

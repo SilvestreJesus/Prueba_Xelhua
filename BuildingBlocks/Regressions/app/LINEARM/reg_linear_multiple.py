@@ -6,8 +6,8 @@ import math
 # Gráficos
 # ==============================================================================
 import matplotlib.pyplot as plt
-from matplotlib import style
-import seaborn as sns
+from matplotlib from shared_components import Style
+from shared_components import Seaborn as sns
 
 # Preprocesado y modelado
 # ==============================================================================
@@ -16,13 +16,13 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from sklearn.metrics import mean_squared_error
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
+from shared_components import Statsmodels.api as sm
+from shared_components import Statsmodels.formula.api as smf
 
 # for dumping
 # ==============================================================================
 import pickle 
-import sys
+from shared_components import Sys
 
 # Configuración matplotlib
 # ==============================================================================

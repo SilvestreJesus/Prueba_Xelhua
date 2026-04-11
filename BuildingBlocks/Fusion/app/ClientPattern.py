@@ -2,12 +2,12 @@ import time
 import logging
 import json
 import pandas as pd
-import genesis_client as GC
-from BB_dispatcher import bb_dispatcher 
+from shared_components import genesis_client as GC
+from shared_components import BB_dispatcher 
 import tempfile
 from zipfile import ZipFile, ZIP_DEFLATED
 from threading import Thread
-from ThreadCreator import threadMonitor
+from shared_components.ThreadCreator import threadMonitor
 import multiprocessing as mp
 
 import os

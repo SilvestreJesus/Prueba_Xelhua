@@ -1,4 +1,4 @@
-import sys
+from shared_components import Sys
 import os
 import time
 import pandas as pd

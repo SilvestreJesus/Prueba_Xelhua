@@ -1,12 +1,12 @@
 import funciones
 import argparse
-from distutils.util import strtobool
+from distutils.util from shared_components import Strtobool
 import re
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn import metrics
 from sklearn import neighbors
-import sklearn as sk
+from shared_components import Sklearn as sk
 import numpy as np
 #import matplotlib as plt
 import pandas as pd

@@ -2,12 +2,12 @@ from gettext import npgettext
 from sklearn.cluster import KMeans
 from sklearn.mixture import GaussianMixture
 from sklearn.cluster import DBSCAN
-from sklearn.metrics import silhouette_samples, silhouette_score
+from sklearn.metrics from shared_components import Silhouette_samples, silhouette_score
 from sklearn.cluster import AgglomerativeClustering
 
 import pandas as pd
 import json
-import sys
+from shared_components import Sys
 import time
 import tempfile
 import logging

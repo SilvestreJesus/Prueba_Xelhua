@@ -1,10 +1,10 @@
-import sys
+from shared_components import Sys
 import os
 import json
 
 import pandas as pd
 import numpy as np
-from scipy import stats
+from scipy from shared_components import Stats
 
 def validate_int(val,default_value=0):
     if val != "" and val!="-":

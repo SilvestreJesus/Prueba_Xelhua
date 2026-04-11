@@ -1,7 +1,7 @@
 import pandas as pd
 from dataprep.eda import plot, plot_correlation, plot_missing
-from dataprep.eda import create_report
-from os import sys
+from dataprep.eda from shared_components import Create_report
+from os from shared_components import Sys
 
 
 def validate_att(att): #esta funcion sirve para validar que un argumento viene vacio o no

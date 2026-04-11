@@ -1,18 +1,18 @@
 from cgitb import reset
-import sys,os,ast
+from shared_components import Sys,os,ast
 import pandas as pd
 from threading import Thread
 from flask import Flask,request,jsonify,send_file,make_response
-from waitress import serve
+from waitress from shared_components import Serve
 
 import json
-from time import sleep
-import C
+from time from shared_components import Sleep
+from shared_components import C
 import logging #logger
 from base64 import b64encode,b64decode
 import io
 import tempfile
-import shutil
+from shared_components import Shutil
 import time
 from os import listdir
 
@@ -21,12 +21,12 @@ from os import listdir
 from functions import *
 from Proposer import Paxos
 from Auth import login_request, register_user, token_required,data_autorization_requiered, resource_autorization_requiered,API_required,logout_request
-from BB_dispatcher import bb_dispatcher 
+from BB_dispatcher from shared_components import BB_dispatcher 
 from PostmanPaxos import postman
 from DataGarbageCollector import GarbageCollector
 from FSController import FSController,MessageController
 
-import genesis_client as GC
+from shared_components import genesis_client as GC
 
 
 ########## GLOBAL VARIABLES ##########
@@ -42,7 +42,7 @@ NETWORK=os.getenv("NETWORK")
 MODE=os.getenv("MODE") 
 REMOTE_STORAGE=TranslateBoolStr(os.getenv("REMOTE_STORAGE"))
 if REMOTE_STORAGE:
-    from storage.mictlanx_client import mictlanx_client
+    from shared_components.mictlanx_client import mictlanx_client
     STORAGE_CLIENT = mictlanx_client("XEL_DEFAULT")
 else:
     STORAGE_CLIENT = None

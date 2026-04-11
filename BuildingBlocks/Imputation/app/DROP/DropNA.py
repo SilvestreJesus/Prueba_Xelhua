@@ -1,4 +1,4 @@
-import sys
+from shared_components import Sys
 import pandas as pd
 
 def validate_int(val,default_value=0):

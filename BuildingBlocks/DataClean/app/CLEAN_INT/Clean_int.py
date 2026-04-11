@@ -1,10 +1,10 @@
-import sys
+from shared_components import Sys
 import os
 import json
 
 import pandas as pd
 import numpy as np
-from scipy import stats
+from scipy from shared_components import Stats
 
 """
 python3 Clean_int.py CalidadAgua.csv clean_dataset.csv "ALC_mg/L,CONDUCT_mS/cm,SDT_mg/L,SDT_M_mg/L,FLUORUROS_mg/L,DUR_mg/L,COLI_FEC_NMP/100_mL,N_NO3_mg/L,AS_TOT_mg/L,CD_TOT_mg/L,CR_TOT_mg/L,HG_TOT_mg/L,PB_TOT_mg/L,MN_TOT_mg/L,FE_TOT_mg/L"
