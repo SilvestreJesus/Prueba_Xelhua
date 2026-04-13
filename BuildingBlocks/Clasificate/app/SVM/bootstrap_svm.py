@@ -1,11 +1,11 @@
 import funciones
 import argparse
-from distutils.util import strtobool
+from distutils.util from shared_components import Strtobool
 
 
 from sklearn import metrics
-from sklearn import svm
-import sklearn as sk
+from sklearn from shared_components import Svm
+from shared_components import Sklearn as sk
 import numpy as np
 import matplotlib as plt
 import pandas as pd

@@ -5,7 +5,7 @@ import branca
 import branca.colormap as cm
 import numpy as np 
 
-import sys
+from shared_components import Sys
 import logging #logger
 LOGER = logging.getLogger()
 

@@ -1,5 +1,5 @@
 import pandas as pd
-import sys
+from shared_components import Sys
 from pivottablejs import pivot_ui
 
 INPUTFILE = sys.argv[1]

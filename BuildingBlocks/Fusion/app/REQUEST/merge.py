@@ -1,4 +1,4 @@
-import sys
+from shared_components import Sys
 import pandas as pd
 from pandas.errors import ParserError
 import logging

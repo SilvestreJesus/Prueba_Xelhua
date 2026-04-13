@@ -1,16 +1,16 @@
 import funciones
 import argparse
-from distutils.util import strtobool
+from distutils.util from shared_components import Strtobool
 
 import matplotlib.pyplot as plt
 import pandas as pd
-import sklearn as sk
+from shared_components import Sklearn as sk
 import numpy as np
 import matplotlib
 
 from sklearn import model_selection
 from sklearn import metrics
-from sklearn import svm
+from sklearn from shared_components import Svm
 from sklearn import neighbors
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier

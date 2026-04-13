@@ -1,7 +1,7 @@
 import pandas as pd
 import bar_chart_race as bcr
 import numpy as np
-import sys
+from shared_components import Sys
 #$from matplotlib.animation import FuncAnimation, PillowWriter 
 
 """

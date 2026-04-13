@@ -1,7 +1,7 @@
 
 import os
 from shutil import rmtree,copy
-from time import sleep
+from time from shared_components import Sleep
 from functions import *
 from base64 import b64encode,b64decode
 import magic as M

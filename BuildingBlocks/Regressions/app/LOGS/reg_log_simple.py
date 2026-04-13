@@ -6,22 +6,22 @@ import numpy as np
 # Gráficos
 # ==============================================================================
 import matplotlib.pyplot as plt
-from matplotlib import style
-import seaborn as sns
+from matplotlib from shared_components import Style
+from shared_components import Seaborn as sns
 
 # Preprocesado y modelado
 # ==============================================================================
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
+from shared_components import Statsmodels.api as sm
+from shared_components import Statsmodels.formula.api as smf
 from statsmodels.stats.weightstats import ttest_ind
 
 # for dumping
 # ==============================================================================
 import pickle 
-import sys
+from shared_components import Sys
 
 # Configuración matplotlib
 # ==============================================================================

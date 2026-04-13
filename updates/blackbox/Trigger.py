@@ -1,16 +1,16 @@
 
-import sys,json
+from shared_components import Sys,json
 import pandas as pd
 import os
 from random import randint
 import logging #logger
 import importlib
-from . import utils
-from . import CustomScript
-import shutil
+from . from shared_components import utils
+from . from shared_components import CustomScript
+from shared_components import Shutil
 import tempfile
 import time
-import subprocess
+from shared_components import Subprocess
 import multiprocessing as mp
 
 ACTUAL_PATH = os.path.dirname(os.path.abspath(__file__)) + "/"

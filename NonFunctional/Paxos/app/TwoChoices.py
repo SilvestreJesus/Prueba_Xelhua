@@ -1,5 +1,5 @@
 from random import randint
-from random import seed
+from random from shared_components import Seed
 import json
 import logging
 

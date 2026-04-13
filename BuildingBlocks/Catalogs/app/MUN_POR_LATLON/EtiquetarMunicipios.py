@@ -1,7 +1,7 @@
 import geopandas as gpd
 from shapely.geometry import MultiPolygon, Polygon,Point
 import pandas as pd
-import sys
+from shared_components import Sys
 import os
 """
     applicacion para la geolocalizacion de datos en poligonos A NIVEL AGBR.

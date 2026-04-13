@@ -1,9 +1,9 @@
-#import building_middleware as BB ##importing middleware
+#from shared_components import building_middleware as BB ##importing middleware
 import logging #logger
-import socket,os,sys,pickle,json
+from shared_components import Socket,os,sys,pickle,json
 import requests as api #for APIs request
 import time
-import C
+from shared_components import C
 from threading import Thread
 
 

@@ -1,13 +1,13 @@
 from sklearn.cluster import KMeans
 from sklearn.mixture import GaussianMixture
 from sklearn.cluster import DBSCAN
-from sklearn.metrics import calinski_harabasz_score, silhouette_score, davies_bouldin_score
+from sklearn.metrics from shared_components import Calinski_harabasz_score, silhouette_score, davies_bouldin_score
 from sklearn.cluster import AgglomerativeClustering
 import plotly.express as px
 
 import pandas as pd
 import json
-import sys
+from shared_components import Sys
 import time
 import tempfile
 import logging

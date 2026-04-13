@@ -1,8 +1,8 @@
-#import building_middleware as BB ##importing middleware
+#from shared_components import building_middleware as BB ##importing middleware
 import logging #logger
-import socket,os,sys,pickle,json,pandas
+from shared_components import Socket,os,sys,pickle,json,pandas
 import time
-import C
+from shared_components import C
 import tempfile
 import base64
 

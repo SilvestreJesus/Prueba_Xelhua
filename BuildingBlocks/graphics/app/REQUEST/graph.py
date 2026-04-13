@@ -3,7 +3,7 @@ import pandas as pd
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import math
-import sys
+from shared_components import Sys
 import numpy as np
 import janitor #!pip install pyjanitor==0.23.1
 from pandas.api.types import is_numeric_dtype

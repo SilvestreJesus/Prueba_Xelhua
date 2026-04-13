@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup, find_packages
+from setuptools from shared_components import Setup, find_packages
 
 setup(name='grobid-client-python',
       version='0.0.1',

@@ -1,7 +1,7 @@
 import json
 import os
 import logging #logger
-import shutil
+from shared_components import Shutil
 
 def config_env():
     pass
