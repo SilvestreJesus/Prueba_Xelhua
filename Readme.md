@@ -298,6 +298,45 @@ http://www.apache.org/licenses/LICENSE-2.0
   * accepter3
 
 ### Bugs Fixed
+* Se removieron las referencias incorrectas y se corrigieron
+* Se actualizó dockerfile del contenedor en falla
+* Los contenedores se desplegan correctamente
+
+#### Comprobación de ejecución
+1. Desplegar y construir
+´´´bash 
+docker compose -f Xel.yml up -d --build
+´´´
+
+El resultado esperado es el siguiente:
+´´´
+[+] up 17/17
+ ✔ Image xel_coordinator:v2.0                     Built                                                                                                                                                              1.3s
+ ✔ Image xel_paxos:v2.0                           Built                                                                                                                                                              1.3s
+ ✔ Image qwerty3435ab/auth_db:v2.0                Built                                                                                                                                                              1.3s
+ ✔ Image xel_gui:v2.0                             Built                                                                                                                                                              1.3s
+ ✔ Image xel_yaml_creator:v2.0                    Built                                                                                                                                                              1.3s
+ ✔ Network xel_service_mesh                       Created                                                                                                                                                            0.0s
+ ✔ Container xelhua_deployment-services_creator-1 Started                                                                                                                                                            0.9s
+ ✔ Container accepter1                            Started                                                                                                                                                            0.9s
+ ✔ Container xelhua_deployment-xel_gui-1          Started                                                                                                                                                            0.9s
+ ✔ Container nginx_lb                             Started                                                                                                                                                            0.8s
+ ✔ Container xel_sdb                              Started                                                                                                                                                            0.7s
+ ✔ Container accepter3                            Started                                                                                                                                                            0.8s
+ ✔ Container xelhua_deployment-db_auth-1          Started                                                                                                                                                            0.8s
+ ✔ Container accepter2                            Started                                                                                                                                                            0.8s
+ ✔ Container xelhua_deployment-coordinator2-1     Started                                                                                                                                                            1.0s
+ ✔ Container xelhua_deployment-coordinator-1      Started                                                                                                                                                            1.0s
+ ✔ Container xelhua_deployment-auth-1             Started                                                                                                                                                            1.1s
+
+´´´
+
+2. Acceder al servicio http://localhost:8080
+3. Crear un grafo
+4. Ejecutar el grafo y esperar el resultado
+4.1 Error encontrado
+(MsjError)[docs/Errores/ErrorConstruccion.png]
+
 
 
 
