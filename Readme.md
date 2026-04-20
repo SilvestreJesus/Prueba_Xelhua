@@ -286,3 +286,18 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 
 http://www.apache.org/licenses/LICENSE-2.0
 
+
+## Bugs Found
+
+
+1- Contenedores en falla
+  * Xelhua_deployment-coordinator-1
+  * Xelhua_deployment-coordinator2-1
+  * accepter1
+  * accepter2
+  * accepter3
+
+### Bugs Fixed
+
+
+
