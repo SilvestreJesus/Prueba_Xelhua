@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 from flask import Flask, jsonify, request
-from flask_api from shared_components import Status
-from shared_components import Subprocess
+from flask_api import status
+import subprocess
 import os
 # import requests
-# from shared_components import Simplejson as json
-from config from shared_components import Config, ProductionConfig, DevelopmentConfig
+# import simplejson as json
+from config import Config, ProductionConfig, DevelopmentConfig
 
 
 app = Flask(__name__)
