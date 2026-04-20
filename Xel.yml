@@ -151,7 +151,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - psql-auth:/var/lib/postgresql/data
+      - ./psql-auth:/var/lib/postgresql/data
       - ./NonFunctional/auth/schema-sql/auth.sql:/docker-entrypoint-initdb.d/auth.sql #for init
     restart: always
 
