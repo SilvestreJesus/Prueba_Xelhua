@@ -1,7 +1,7 @@
 
 import os
-from mictlanx.v4.client from shared_components import Client
-from mictlanx.utils.index from shared_components import utils as UtilsX
+from mictlanx.v4.client import Client
+from mictlanx.utils.index import Utils as UtilsX
 import json
 
 class mictlanx_client:
