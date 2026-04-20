@@ -3,7 +3,7 @@ import logging
 from threading import Thread
 import os
 from shutil import rmtree
-from time from shared_components import Sleep
+from time import sleep
 from datetime import datetime, timedelta
 
 

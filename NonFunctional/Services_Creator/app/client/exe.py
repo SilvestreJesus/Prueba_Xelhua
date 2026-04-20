@@ -1,4 +1,4 @@
-from shared_components import Client as c
+import client as c
 import json
 def read_data_file():
     f = open("start_services_data.json")
