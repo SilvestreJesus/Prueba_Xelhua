@@ -342,7 +342,7 @@ El resultado esperado es el siguiente:
 4.2 Contenedor con error
 Después de revisar el flujo de Xelhua se encontro que la falla esta en el contenedor ´services_creator´. A continuación se presenta la evidencia del error.
 
-![load](./docs/Errores/ServiceCreator.png)
+![load](./docs/Errores/ESC.png)
 
 Este error depende de la herramienta de despliegue del proyecto de NEZ, por lo que no corresponde a Xelhua resolverlo
 
