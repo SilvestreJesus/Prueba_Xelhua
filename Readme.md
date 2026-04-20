@@ -335,7 +335,7 @@ El resultado esperado es el siguiente:
 3. Crear un grafo
 4. Ejecutar el grafo y esperar el resultado
 4.1 Error encontrado
-(MsjError)[./docs/Errores/ErrorConstruccion.png]
+![load](./docs/Errores/ErrorConstruccion.png)
 
 
 
