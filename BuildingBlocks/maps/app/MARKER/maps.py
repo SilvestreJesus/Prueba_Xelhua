@@ -252,4 +252,7 @@ else:
     Generación de mapas sin agrupación
     """
     plot_maps(gdf)
+    
+    
+#Esto es nuevo para probar el push
 
