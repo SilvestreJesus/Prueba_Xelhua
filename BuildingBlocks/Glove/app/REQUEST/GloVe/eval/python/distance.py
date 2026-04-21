@@ -1,6 +1,6 @@
 import argparse
 import numpy as np
-import sys
+from shared_components import Sys
 
 def generate():
     parser = argparse.ArgumentParser()

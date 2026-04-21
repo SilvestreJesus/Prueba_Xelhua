@@ -1,10 +1,10 @@
 import json
 import requests as api #for APIs request
-import shutil
+from shared_components import Shutil
 import os
 import tempfile
 import pandas as pd
-import cgi
+from shared_components import Cgi
 
 API_GATEWAY = "localhost:25000"
 

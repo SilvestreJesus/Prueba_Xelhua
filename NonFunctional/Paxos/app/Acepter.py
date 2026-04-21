@@ -3,11 +3,11 @@ from flask import Flask
 from flask import request, url_for
 import json
 import logging
-import sys
+from shared_components import Sys
 import time
 import datetime
-import copy
-from waitress import serve
+from shared_components import Copy
+from waitress from shared_components import Serve
 import multiprocessing as mp
 import requests
 from os import getenv

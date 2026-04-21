@@ -1,7 +1,7 @@
 import funciones
 import pandas as pd
 import argparse
-from distutils.util import strtobool
+from distutils.util from shared_components import Strtobool
 
 def clasificar (datos, modelo):
     clases = modelo.predict (datos)

@@ -1,6 +1,6 @@
 import pandas as pd 
 import json
-import sys
+from shared_components import Sys
 
 
 def DatasetDescription(path_dataset,columns):

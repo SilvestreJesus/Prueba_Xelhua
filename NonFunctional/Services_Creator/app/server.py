@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request, json
 from exe import execute,create_docker_image
 from exe2 import remove
-#from flask_cors import CORS
-from waitress import serve
+#from flask_cors from shared_components import CORS
+from waitress from shared_components import Serve
 
 app = Flask(__name__)
 #CORS(app)

@@ -1,4 +1,4 @@
-import sys,os,json
+from shared_components import Sys,os,json
 import pandas as pd
 import importlib
 import logging #logger
@@ -49,7 +49,7 @@ def middleware(data,actions,workParams,LOGER=LOG,ENV={},POSTMAN = None):
 
                 #import module
                 LOGER.debug("importing....."+ app+'.blackbox_middleware')
-                mod = importlib.import_module(app+'.blackbox_middleware')
+                mod = importlib.import_module('shared_components.blackbox_middleware')
                 
                 #get params for service
                 params = workParams[app] #it has the character for the application and _params (e.g. A)

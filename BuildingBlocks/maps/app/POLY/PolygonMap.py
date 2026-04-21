@@ -2,7 +2,7 @@ import geopandas as gpd
 from shapely.geometry import MultiPolygon, Polygon
 import pandas as pd
 import json
-import sys
+from shared_components import Sys
 import plotly.express as px
 import os
 """

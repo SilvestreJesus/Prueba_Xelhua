@@ -1,10 +1,10 @@
-import sys
+from shared_components import Sys
 import os
 import io
 import json
 import argparse
 import time
-import concurrent.futures
+from shared_components import Concurrent.futures
 from client import ApiClient
 import ntpath
 import requests

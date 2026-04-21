@@ -1,20 +1,20 @@
-#import building_middleware as BB ##importing middleware
+#from shared_components import building_middleware as BB ##importing middleware
 import logging #logger
-import socket,os,sys,pickle,json,pandas
+from shared_components import Socket,os,sys,pickle,json,pandas
 import time
-import C
+from shared_components import C
 from threading import Thread
-import building_middleware as BB ##importing middleware
+from shared_components import building_middleware as BB ##importing middleware
 import tempfile
 import tqdm
 import base64
-from Postman import postman
-from ClientPattern import client_pattern 
-from BB_dispatcher import bb_dispatcher 
-from ThreadCreator import threadMonitor
+from shared_components.Postman import postman
+from shared_components import ClientPattern 
+from shared_components import BB_dispatcher 
+from shared_components.ThreadCreator import threadMonitor
 import multiprocessing as mp
 import gc
-import shutil
+from shared_components import Shutil
 
 #solutions
 SOLUTIONS_FILE="records.txt"

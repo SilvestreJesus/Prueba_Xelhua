@@ -1,13 +1,13 @@
-import sys
+from shared_components import Sys
 import os
 import time
 import pandas as pd
 from base64 import b64decode,b64encode
 import json
 import requests
-import shutil
+from shared_components import Shutil
 import urllib.request as request
-from contextlib import closing
+from contextlib from shared_components import Closing
 
 LOCAL_FILES = "./FILES/"
 

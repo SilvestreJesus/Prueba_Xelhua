@@ -1,5 +1,5 @@
-import socket
-import sys
+from shared_components import Socket
+from shared_components import Sys
 import pickle
 import json
 import requests as api #for APIs request
