@@ -10,7 +10,7 @@ import logging
 import json
 from chardet.universaldetector import UniversalDetector
 import numpy as np
-from shared_components import Csv
+import csv
 
 
 

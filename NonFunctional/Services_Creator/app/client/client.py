@@ -1,4 +1,4 @@
-from shared_components import Sys,json,requests
+import sys,json,requests
 
 
 def read_json_file(path):
