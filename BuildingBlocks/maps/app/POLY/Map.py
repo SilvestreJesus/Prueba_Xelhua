@@ -2,208 +2,186 @@ import geopandas as gpd
 from shapely.geometry import MultiPolygon, Polygon
 import pandas as pd
 import json
-import os
-import sys
+from shared_components import Sys # Importación de componentes compartidos del sistema
 import plotly.express as px
-from flask import Flask, request
+import os
+import sys # Importado para manejar argumentos de línea de comandos (sys.argv)
 
 """
-APLICACIÓN PARA LA GEOLOCALIZACIÓN DE DATOS EN POLÍGONOS (NIVEL AGEB / MUNICIPAL)
---------------------------------------------------------------------------------
-Este script permite procesar archivos geográficos, cruzar datos estadísticos 
-y generar mapas interactivos o servicios web de consulta de polígonos.
+    APLICACIÓN PARA LA GEOLOCALIZACIÓN DE DATOS EN POLÍGONOS A NIVEL AGBR.
+    Este script permite la generación de mapas coropléticos interactivos y 
+    servicios web para la gestión de datos geográficos.
 """
 
-# --- CONFIGURACIÓN GLOBAL ---
-
-# Obtiene la ruta absoluta del directorio donde se encuentra este archivo
+# Obtiene la ruta absoluta del directorio donde se ejecuta el script para evitar errores de rutas relativas
 ACTUAL_PATH = os.path.dirname(os.path.abspath(__file__)) + "/"
 
-# Diccionario de coordenadas para centrar el mapa automáticamente por estado
-# Clave: ID del estado (INEGI), Valor: Latitud y Longitud
-centers = {
-    15: {"lat": 19.3969, "lon": -99.2833}  # Estado de México
+# Diccionario de coordenadas predefinidas para centrar el mapa según el ID del estado
+centers ={
+    15:{"lat":19.3969, "lon": -99.2833} # Coordenadas para el Estado de México
 }
 
-# --- FUNCIONES DE APOYO Y VALIDACIÓN ---
-
-def validate_att(att):
+def validate_att(att): 
     """
-    Valida si un argumento de entrada contiene datos válidos o está vacío.
-    :param att: (str) El atributo a validar.
-    :return: (bool) False si es vacío o un guion, True si tiene contenido.
+    Valida si un argumento o atributo de texto recibido contiene datos o está vacío.
+    :param att: Valor de texto a validar.
+    :return: False si está vacío o es un guion, True si tiene contenido válido.
     """
-    if att == "" or att == "-":
+    if att =="" or att =="-":
         return False
     else:
         return True
 
-def validate_bool(att):
+def validate_bool(att): 
     """
-    Convierte un valor de texto tipo '0' o '1' a un booleano real.
-    :param att: (str) El valor recibido de consola o API.
-    :return: (bool) False si el string es "0", True en cualquier otro caso.
+    Valida y convierte un argumento de texto en un valor booleano lógico.
+    :param att: Valor de texto (ej. "0" o "1").
+    :return: False si el texto es "0", True en cualquier otro caso.
     """
-    if att == "0":
+    if att =="0":
         return False
     else:
         return True
 
 def export_figures(fig, outputpath, imagefile_name, title):
     """
-    Configura el diseño (layout) y exporta el mapa de Plotly a un archivo HTML interactivo.
-    :param fig: Objeto de figura de Plotly Express.
-    :param outputpath: (str) Carpeta de destino del archivo.
-    :param imagefile_name: (str) Nombre del archivo (sin extensión).
-    :param title: (str) Título que se mostrará dentro del mapa.
+    Configura la estética, herramientas interactivas y exporta el mapa a formato HTML.
+    :param fig: Objeto figura de Plotly.
+    :param outputpath: Directorio de destino.
+    :param imagefile_name: Nombre del archivo de salida.
+    :param title: Título visible en el mapa.
     """
-    # Configuración de herramientas de la barra de modo (dibujo, zoom, etc.)
-    config = {
-        'displaylogo': False,
+    # Configuración de la barra de herramientas de Plotly (Modo edición y dibujo)
+    config = {'displaylogo': False,
         'editable': True,
         'showLink': True,
         'plotlyServerURL': "https://chart-studio.plotly.com",
-        'modeBarButtonsToAdd': ['drawline', 'drawopenpath', 'drawclosedpath', 'drawcircle', 'drawrect', 'eraseshape']
+        'modeBarButtonsToAdd':['drawline','drawopenpath','drawclosedpath','drawcircle','drawrect','eraseshape']
     }
-    
-    # Actualización de dimensiones y modo de información al pasar el mouse
-    fig.update_layout(
-        title=title,
-        width=1800,
-        height=1000,
-        hovermode='closest'
-    )
+    # Ajuste de dimensiones y comportamiento del hover (información flotante)
+    fig.update_layout(title=title,
+                    width=1800,
+                    height=1000,
+                    hovermode='closest')
 
-    # Generación del archivo físico HTML
-    fig.write_html("%s/%s.html" % (outputpath, imagefile_name), config=config)
+    # Generación del archivo HTML interactivo
+    fig.write_html("%s/%s.html" % (outputpath,imagefile_name),config=config)
 
+# --- PROCESAMIENTO DE ARGUMENTOS DE LÍNEA DE COMANDOS ---
+# Ejemplo de uso: python3 Map.py 01_base_integrada.csv ./output "cvegeo" "etiqueta" "casos" "15" "Mi Titulo"
+if len(sys.argv) > 1:
+    inputpath = sys.argv[1]      # Archivo CSV de entrada con datos estadísticos
+    outputpath = sys.argv[2]     # Ruta de salida para el mapa
+    geocve_column = sys.argv[3]  # Columna que vincula el CSV con el ID del mapa (CVEGEO)
+    string_label= sys.argv[4]    # Columna para mostrar texto en el hover
+    label_color = sys.argv[5]    # Columna numérica que define el color del polígono
+    area = sys.argv[6]           # ID del estado (1-32) para cargar el GeoJSON adecuado
+    title = sys.argv[7]          # Título principal del mapa
 
-# --- BLOQUE PRINCIPAL DE EJECUCIÓN (MODO SCRIPT) ---
-# Se ejecuta cuando llamas al archivo desde la terminal:
-# Ejemplo: python3 Map.py data.csv ./output "cvegeo" "nombre_mun" "total_casos" "15" "Mi Mapa"
-
-if __name__ == "__main__" and len(sys.argv) > 1:
-    # 1. Captura de parámetros de línea de comandos
-    inputpath = sys.argv[1]      # Ruta del archivo CSV con los datos
-    outputpath = sys.argv[2]     # Carpeta donde se guardará el resultado
-    geocve_column = sys.argv[3]  # Nombre de la columna ID en el CSV (CVEGEO)
-    string_label = sys.argv[4]   # Columna para el texto del hover (etiqueta)
-    label_color = sys.argv[5]    # Columna para determinar el color del polígono
-    area = sys.argv[6]           # ID de la entidad (ej. "15" para EdoMex)
-    title = sys.argv[7]          # Título del mapa
-
-    # Si no se define una etiqueta para el hover, se usa la clave geográfica por defecto
+    # Si no se especifica etiqueta para el hover, se usa la clave geográfica por defecto
     if not validate_att(string_label):
         string_label = geocve_column
 
-    print("Leyendo archivos geográficos...")
-    # Carga del GeoJSON correspondiente al área seleccionada
-    geo = json.load(open("%s/GEOJSONS/%sa.json" % (ACTUAL_PATH, area), "r"))
-    
-    # Carga del CSV de datos estadísticos
+    print("leyendo geojson")
+    # Carga del archivo geográfico JSON basado en el área seleccionada
+    geo = json.load(open("%s/GEOJSONS/%sa.json" % (ACTUAL_PATH,area) ,"r"))
+    # Lectura del archivo de datos estadísticos
     df = pd.read_csv(inputpath)
 
-    print("Configurando centro y zoom del mapa...")
-    # Intenta obtener el centro del estado desde el diccionario; si no existe, usa valores por defecto
+    print("creando mapa")
+    # Configuración del centro y zoom del mapa según el área
     try:
         cent = centers[int(area)]
         zoom = 9 
     except Exception as e:
-        cent = {"lat": 19.4326, "lon": -99.1332} # CDMX por defecto
+        # Valores por defecto si el ID del área no está en el diccionario 'centers'
+        cent = {"lat": 19.4326, "lon": -99.1332} 
         zoom = 3
 
-    # OPTIMIZACIÓN: Filtrado de polígonos
-    # Obtenemos los IDs únicos del CSV y filtramos el GeoJSON para que solo tenga esos polígonos
+    # Obtención de los IDs geográficos únicos presentes en el CSV
     wanted = df[geocve_column].unique()
+    print(f"Registros en datos: {len(wanted)}")
+    print(f"Polígonos originales: {len(geo['features'])}")
+
+    # FILTRADO: Se mantienen solo los polígonos del GeoJSON que tienen datos en el CSV
+    # Esto optimiza el rendimiento del mapa final al no renderizar áreas vacías
     filtered = [g for g in geo['features'] if g['properties']['CVEGEO'] in wanted]
     geo['features'] = filtered
+    print(f"Polígonos filtrados: {len(filtered)}")
 
-    print(f"Generando mapa coroplético con {len(filtered)} elementos...")
-    # Creación del mapa usando Mapbox
-    fig = px.choropleth_mapbox(
-        df, 
-        geojson=geo, 
-        locations=geocve_column,            # Columna del DF
-        featureidkey="properties.CVEGEO",   # Llave dentro del GeoJSON
-        color_continuous_scale="Viridis",   # Escala cromática
-        hover_name=string_label,            # Título en el cuadro flotante
-        zoom=zoom,
-        center=cent,
-        mapbox_style="carto-positron",      # Estilo del mapa base
-        color=label_color,                  # Variable que define el color
-        opacity=0.5                         # Transparencia
-    )
+    # Creación del mapa coroplético interactivo con Mapbox
+    fig = px.choropleth_mapbox(df, geojson=geo, locations=geocve_column, 
+                            featureidkey="properties.CVEGEO", # Ruta al ID dentro del GeoJSON
+                            color_continuous_scale="Viridis",
+                            hover_name=string_label,
+                            zoom=zoom,
+                            center = cent,
+                            mapbox_style="carto-positron",
+                            color=label_color,
+                            opacity=0.5)
 
-    # Exportación final
-    export_figures(fig, outputpath, "mapa", title)
-    print("Proceso completado.")
+    # Llamada a la función de exportación
+    export_figures(fig,outputpath,"mapa",title)
 
-
-# --- SERVIDOR WEB (API FLASK) ---
-
+# --- BLOQUE DE SERVIDOR WEB (FLASK) ---
+# Nota: Este bloque está comentado en el original para separar el uso de script del uso de API
+"""
+from flask import Flask, request
 app = Flask(__name__)
 
+# Ruta base para verificar que el servicio está corriendo
 @app.route('/')
-def status():
-    """Ruta base para verificar que el servicio está activo."""
-    return {"status": "OK", "message": "Servicio de geolocalización activo"}
+def prueba():
+    return {"status":"OK","message":"shapes"}
 
 @app.route('/CreateJSONS')
 def createjsons():
-    """
-    Lee un archivo Shapefile (.shp) y genera catálogos JSON optimizados.
-    Calcula centroides y extrae coordenadas para uso en aplicaciones web.
-    """
-    # Lectura del archivo geográfico original
-    df_geo = gpd.read_file("Shapes/15mun_wgs84.shp")
-    df_geo['centroid'] = ''
-
+    # Lee archivos Shapefile para convertirlos en catálogos JSON ligeros
+    df = gpd.read_file("Shapes/15mun_wgs84.shp")
+    df['centroid']=''
+    
     def coord_lister(row):
-        """
-        Función interna para extraer coordenadas de la geometría de cada fila.
-        :param row: Fila del GeoDataFrame.
-        """
-        # Caso 1: La geometría contiene múltiples polígonos
+        # Procesa geometrías complejas (MultiPolygon)
         if isinstance(row.geometry, MultiPolygon):
             list_of_polys = []
             for poly in row.geometry.geoms:
-                list_points = []
+                list_points= []
                 for p in poly.exterior.coords:
-                    # Formato amigable para Leaflet/Google Maps (lat, lng)
-                    list_points.append({"lat": p[1], "lng": p[0]})
+                    # Invierte el orden de coordenadas para compatibilidad (lat, lng)
+                    list_points.append({"lat":p[0],"lng":p[1]})
                 list_of_polys.append(list_points)
             
-            # Cálculo del punto central (centroide)
-            row.centroid = {"lat": row.geometry.centroid.y, "lng": row.geometry.centroid.x}
+            # Calcula el centroide para colocar marcadores o etiquetas
+            row.centroid = {"lat":row.geometry.centroid.x,"lng":row.geometry.centroid.y}
             row.geometry = list_of_polys
             
-        # Caso 2: La geometría es un polígono simple
+        # Procesa geometrías simples (Polygon)
         else:
-            list_points = []
+            list_points= []
             for p in row.geometry.exterior.coords:
-                list_points.append({"lat": p[1], "lng": p[0]})
-            row.centroid = {"lat": row.geometry.centroid.y, "lng": row.geometry.centroid.x}
+                list_points.append({"lat":p[0],"lng":p[1]})
+            row.centroid = {"lat":row.geometry.centroid.x,"lng":row.geometry.centroid.y}
             row.geometry = list_points
         return row
 
-    # Aplica la extracción de coordenadas a todo el archivo
-    coordinates = df_geo.apply(coord_lister, axis=1)
-    
-    # Guarda los resultados en archivos JSON para ser consumidos por el Frontend
-    coordinates[['cvegeo', 'nomgeo', 'geometry']].to_json("catalogs/polygon_15mun.json", orient="columns")
-    coordinates[['cvegeo', 'nomgeo', 'centroid']].to_json("catalogs/centroid_15mun.json", orient="columns")
+    # Aplica la transformación a cada fila del GeoDataFrame
+    coordinates = df.apply(coord_lister,axis=1)
+    # Exporta catálogos de polígonos y centroides para el frontend
+    coordinates[['cvegeo','nomgeo','geometry']].to_json("catalogs/polygon_15mun.json",orient="columns")
+    coordinates[['cvegeo','nomgeo','centroid']].to_json("catalogs/centroid_15mun.json",orient="columns")
 
-    return {"status": "OK", "message": "Catálogos generados correctamente"}
+    return {"status":"OK","message":"shapes"}
 
-@app.route('/getPolygon', methods=['POST'])
+@app.route('/getPolygon',methods=['POST'])
 def get_agbs():
-    """
-    Recibe una petición POST y devuelve la geometría municipal almacenada.
-    """
+    # Servicio para obtener polígonos específicos mediante una petición POST
     params = request.get_json(force=True)
-    # Ejemplo de uso: filtrar por params['states'] si fuera necesario
-    return json.load(open("catalogs/15mun.json", "r"))
+    print(params['states'])
+    return json.load(open("catalogs/15mun.json", "r") )
 
 if __name__ == '__main__':
-    # Ejecución del servidor en el puerto 5555
-    app.run(host='0.0.0.0', port=5555, debug=True)
+    # Ejecuta el servidor en modo debug en el puerto 5555
+    app.run(host= '0.0.0.0',port=5555,debug=True)
+"""
+
+
