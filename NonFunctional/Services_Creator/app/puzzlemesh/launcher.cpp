@@ -10,7 +10,7 @@ void Launcher::execute(string mode)
 	this->coupling();
 	this->buildYML(mode);
 
-	compose_command = "docker-compose --log-level ERROR -p " + pwdStr + "/results/" + this->workflow->getWorkdir() +
+	compose_command = "docker-compose --log-level ERROR -p " + this->workflow->getName() +
 					  " -f " + pwdStr + "/results/" + this->workflow->getWorkdir() + "/docker-compose.yml ";
 
 	// Deploy YML
@@ -39,7 +39,7 @@ void Launcher::start(string mode)
 	}
 	else
 	{
-		compose_command = "docker-compose --log-level ERROR -p " + pwdStr + "/results/" + this->workflow->getWorkdir() +
+		compose_command = "docker-compose --log-level ERROR -p " + this->workflow->getName() +
 						  " -f " + pwdStr + "/results/" + this->workflow->getWorkdir() + "/docker-compose.yml ";
 		up_command = compose_command + " up -d --build";
 		// //search fo replicas
