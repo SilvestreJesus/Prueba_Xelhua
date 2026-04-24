@@ -1,7 +1,7 @@
 import json
 import os
 import logging #logger
-from shared_components import Shutil
+import shutil
 
 LOGER = logging.getLogger()
 

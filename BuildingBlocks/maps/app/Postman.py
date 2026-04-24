@@ -5,15 +5,15 @@ import logging
 import json
 #from TPS.Builder import Builder #TPS API BUILDER
 import tempfile
-from shared_components import Shutil
-from shared_components import Cgi
+import shutil
+import cgi
 import multiprocessing as mp
 from threading import Thread
 import os
 import hashlib
-from shared_components.mictlanx_client import mictlanx_client
+#from storage.mictlanx_client import mictlanx_client
 import magic as M
-from shared_components import CreateDataToken,DatasetDescription
+from functions import CreateDataToken,DatasetDescription
 import pandas as pd
 
 class postman(Thread):
@@ -40,8 +40,8 @@ class postman(Thread):
         ####### REMOTE STORAGE #
         self.REMOTE_STORAGE=os.getenv("STORAGE_OPT","LOCAL")
 
-        if self.REMOTE_STORAGE == "MICTLAN":
-            self.STORAGE_CLIENT = mictlanx_client(NETWORK,self.LOGER)
+        #if self.REMOTE_STORAGE == "MICTLAN":
+        #    self.STORAGE_CLIENT = mictlanx_client(NETWORK,self.LOGER)
 
 
         ###########################

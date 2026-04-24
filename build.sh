@@ -9,6 +9,7 @@ Construir=true
 #=====alias de modulos de xel=======#
 tag_coordinator="xel_coordinator:v2.0"
 tag_paxos="xel_paxos:v2.0"
+tag_base_yaml_creator="xel_base_yaml_creator:v2.0"
 tag_yaml_creator="xel_yaml_creator:v2.0"
 tag_gui="xel_gui:v2.0"
 
@@ -49,27 +50,31 @@ option=1
 #=================================================================#
 
 
-    echo "construyendo imagenes"
+    echo "Construyendo imagenes de componentes centrales de Xelhua"
     # construir imagenes de modulos de xelhua
     docker build -t ${tag_gui} ./Frontend
     docker build -t ${tag_coordinator} AG
     docker build -t ${tag_paxos} ./NonFunctional/Paxos
-    docker build -t ${tag_yaml_creator} ./NonFunctional/Services_Creator
+    #cp -r BuildingBlocks/shared_components/ BuildingBlocks/maps/
+    docker build -f ./NonFunctional/Services_Creator/DockerfileBase -t xel_base_yaml_creator:v2.0 ./NonFunctional/Services_Creator/
+    docker build -t ${tag_yaml_creator} ./NonFunctional/Services_Creator 
         
         ##construir imagenes de servicios de xelhua (BB)
+    echo "Construyendo las imagenes de los servicios"
+    #Es necesario descomentar las que se requieren para las pruebas debido a que la construcción puede demorar horas si se construye todo
     #docker build -t ${tag_filtercolumn} ./BuildingBlocks/FilterColumn #Filtrar columnas
     #docker build -t ${tag_fusion} ./BuildingBlocks/Fusion #Fusion
-    #docker build -t ${tag_correlations} ./BuildingBlocks/Correlations
+    docker build -t ${tag_correlations} ./BuildingBlocks/Correlations
     #docker build -t ${tag_data_split} ./BuildingBlocks/DataSplit
     #docker build -t ${tag_data_clean} ./BuildingBlocks/DataClean
     #docker build -t ${tag_imputation} ./BuildingBlocks/Imputation
     #docker build -t ${tag_charts} ./BuildingBlocks/graphics
-    #docker build -t ${tag_maps} ./BuildingBlocks/maps
+    docker build -t ${tag_maps} ./BuildingBlocks/maps
     #docker build -t ${tag_catalog} ./BuildingBlocks/Catalogs
-    #docker build -t ${tag_regressions} ./BuildingBlocks/Regressions
-    #docker build -t ${tag_statistics} ./BuildingBlocks/statistics
+    docker build -t ${tag_regressions} ./BuildingBlocks/Regressions
+    docker build -t ${tag_statistics} ./BuildingBlocks/statistics
     docker build -t ${tag_transform} ./BuildingBlocks/TransformStrData
-    #docker build -t ${tag_clustering} ./BuildingBlocks/ClusteringAlgh
+    docker build -t ${tag_clustering} ./BuildingBlocks/ClusteringAlgh
     #docker build -t ${tag_acquisition} ./BuildingBlocks/Acq
     #docker build -t ${tag_grobid} ./BuildingBlocks/Grobid
     #docker build -t ${tag_glove} ./BuildingBlocks/Glove

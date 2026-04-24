@@ -2,7 +2,7 @@ services:
 
   nginx_lb:
     image: nginx:1.23-alpine  # Imagen ligera de Nginx
-    container_name: nginx_lb
+    container_name: xelhua_nginx_lb
     volumes:
       - ./LoadBalancer/nginx.template.conf:/etc/nginx/nginx.template.conf:ro
       - ./LoadBalancer/docker-entrypoint.sh:/docker-entrypoint.sh:ro
@@ -16,17 +16,13 @@ services:
 
   xel_gui:  # Graphic user interface
     image: xel_gui:v2.0
-    build:
-      context: ./Frontend
-      dockerfile: ./Dockerfile
+    container_name: xelhua_gui
     environment:      
       XEL_IP: "nginx_lb" #for labs network
       XEL_PORT: 80 #for labs network
       GOOGLE_MAPS_KEY: "AIzaSyD_qWZ5Z3tHY5JqXksf19meBOmfAR1Wmw4"
     ports:
       - "8080:80"
-    volumes:
-      - ./Frontend/app:/var/www/html/ #for debug
     networks:
       - service_mesh
     restart: always
@@ -40,9 +36,7 @@ services:
   
   coordinator2: # COORDINATOR
     image: xel_coordinator:v2.0
-    build:
-      context: ./AG
-      dockerfile: ./Dockerfile
+    container_name: xelhua_paxos_coordinator2
     volumes:
       - ./localdata/LAKE/USERS:/home/app/SUPPLIES/ #Path for user's data
       - ./localdata/LAKE/SOLUTIONS:/home/app/BACKUPS/ #Path for solutions's Data
@@ -65,10 +59,8 @@ services:
           - node.role == manager
 
   coordinator: # COORDINATOR
+    container_name: xelhua_paxos_coordinator
     image: xel_coordinator:v2.0
-    build:
-      context: ./AG
-      dockerfile: ./Dockerfile
     ports:
       - "25000:5555" #for develop and to consume xel APIs. Please comment this line on production.
     volumes:
@@ -93,7 +85,7 @@ services:
           - node.role == manager
 
   sdb: # tps manager mongoDB
-    container_name: xel_sdb
+    container_name: xelhua_sdb
     image: mongo:4.4
     command: mongod --quiet --logpath /dev/null 
     restart: always
@@ -116,6 +108,7 @@ services:
 
   auth: #Authentication service
     image: qwerty3435ab/auth:v2.0
+    container_name: xelhua_auth_service
     depends_on:
       - db_auth
     ports:
@@ -133,15 +126,11 @@ services:
       AUTH_PORT: 47011
       FRONTEND_PORT: 30004
       SERVER_PORT: 305000
-    #volumes:
-    #  - ./NonFunctional/auth/auth/:/var/www/html/ #for debug
     restart: always
 
   db_auth: #Authentication database
+    container_name: xelhua_auth_db
     image: qwerty3435ab/auth_db:v2.0
-    build:
-      context: ./NonFunctional/auth
-      dockerfile: ./DF_AuthDB
     expose:
       - "5432"
     networks:
@@ -159,14 +148,10 @@ services:
 ############## Deploy service #############
 ###########################################
   services_creator:
+    container_name: xelhua_service_creator
     image: xel_yaml_creator:v2.0
-    build:
-      context: ./NonFunctional/Services_Creator
-      dockerfile: ./Dockerfile
     restart: unless-stopped
     working_dir: /home/app/
-    #ports:
-    #  - '2000:2000'
     networks:
       - service_mesh
     volumes:
@@ -174,16 +159,10 @@ services:
       - "./resources.json:/home/app/resources.json"
       - "./BuildingBlocks:/home/app/BuildingBlocks"
       - "./build.sh:/home/app/build.sh"
-
-      #- "./NonFunctional/Services_Creator/app:/home/app"
-      #- "/home/robot/xel/NonFunctional/Services_Creator/app/:/home/robot/xel/NonFunctional/Services_Creator/app/"
-      #- "/testing/xel/NonFunctional/Services_Creator/app/:/testing/xel/NonFunctional/Services_Creator/app/"
     entrypoint: python3 server.py
     environment:
       FLASK_ENV: development
-      #HOST_PATH: /home/robot/xel/NonFunctional/Services_Creator/app/
       HOST_PATH: /home/app/
-      #HOST_PATH: /testing/xel/NonFunctional/Services_Creator/app/ #gamma
       IMAGES_REPO_URL: 148.247.201.222:31978/
       IMAGES_REPO: "local"
       API_KEY: 9aa491c85508cfeead30c569c88c8f26e3881792a3f158a323ee9ac6150ab1cd
@@ -194,28 +173,12 @@ services:
 
 
 ###########################################
-############ external services ############
-###########################################
-
-#  grobid: # tools to clean data
-#    container_name: grobid
-#    image: lfoppiano/grobid:0.6.1
-#    environment:      
-#      GROBID__NB_THREADS: 4 #configuration location
-#    networks:
-#      - service_mesh
-#    restart: always
-
-###########################################
 ############## PAXOS NETWORK ##############
 ###########################################
 
   accepter_1: # accepter
     image: xel_paxos:v2.0
-    container_name: accepter1
-    build:
-      context: ./NonFunctional/Paxos
-      dockerfile: ./Dockerfile
+    container_name: xelhua_paxos_accepter1
     environment:
       DATABASE_HOST: sdb
     mem_limit: 640M
@@ -226,15 +189,10 @@ services:
       - service_mesh
     env_file:
       - AG.env
-    volumes:
-      - ./localdata/LAKE/METADATA:/home/app/METADATA #for debugging
 
   accepter_2: # accepter
     image: xel_paxos:v2.0
-    container_name: accepter2
-    build:
-      context: ./NonFunctional/Paxos
-      dockerfile: ./Dockerfile
+    container_name: xelhua_paxos_accepter2
     environment:
       DATABASE_HOST: sdb
     mem_limit: 640M
@@ -245,15 +203,10 @@ services:
       - service_mesh
     env_file:
       - AG.env
-    volumes:
-      - ./localdata/LAKE/METADATA:/home/app/METADATA #for debugging
 
   accepter_3: # accepter
     image: xel_paxos:v2.0
-    container_name: accepter3
-    build:
-      context: ./NonFunctional/Paxos
-      dockerfile: ./Dockerfile
+    container_name: xelhua_paxos_accepter3
     environment:
       DATABASE_HOST: sdb
     mem_limit: 640M
@@ -264,9 +217,6 @@ services:
       - service_mesh
     env_file:
       - AG.env
-    volumes:
-      - ./localdata/LAKE/METADATA:/home/app/METADATA #for debugging
-      #- ./NonFunctional/Paxos/app:/home/app #for debugging
 
 ###########################################
 ###########################################

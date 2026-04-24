@@ -1,5 +1,5 @@
 FROM python
-WORKDIR home
+WORKDIR /home/
 
 RUN pip install flask --user 
 RUN pip install requests --user
