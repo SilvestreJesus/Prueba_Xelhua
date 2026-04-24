@@ -126,10 +126,10 @@ def plot_maps(df):
             pass
 
 
-         # Se calcula el centro del mapa usando la mediana de coordenadas
+        # Se calcula el centro del mapa usando la mediana de coordenadas
         locat= [df[LAT_COLUMN].median(), df[LON_COLUMN].median()]
         import folium
-         # Se crea el mapa base
+        # Se crea el mapa base
         map_layer = folium.Map(location=locat, zoom_start=6, control_scale=True,prefer_canvas=True)
 
         # Heatmap
