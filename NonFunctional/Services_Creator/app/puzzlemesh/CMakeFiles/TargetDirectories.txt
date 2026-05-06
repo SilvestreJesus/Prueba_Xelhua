@@ -1,3 +1,0 @@
-/home/robot/xel/NonFunctional/Services_Creator/app/puzzlemesh/CMakeFiles/edit_cache.dir
-/home/robot/xel/NonFunctional/Services_Creator/app/puzzlemesh/CMakeFiles/rebuild_cache.dir
-/home/robot/xel/NonFunctional/Services_Creator/app/puzzlemesh/CMakeFiles/puzzlemesh.dir
