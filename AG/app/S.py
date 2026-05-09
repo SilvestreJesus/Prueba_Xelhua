@@ -79,11 +79,3 @@ while True:
     LOGER.error("o si \n")
     del data
     del result
-
-
-
-
-
-
-
-

@@ -1,5 +1,5 @@
 
-from Client import CltFunxion,DAG,Service
+from Client from shared_components import CltFunxion,DAG,Service
 
 
 print("lib loaded")

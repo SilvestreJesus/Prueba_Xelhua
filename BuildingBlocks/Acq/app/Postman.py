@@ -5,15 +5,15 @@ import logging
 import json
 #from TPS.Builder import Builder #TPS API BUILDER
 import tempfile
-import shutil
-import cgi
+from shared_components import Shutil
+from shared_components import Cgi
 import multiprocessing as mp
 from threading import Thread
 import os
 import hashlib
-from storage.mictlanx_client import mictlanx_client
+from shared_components.mictlanx_client import mictlanx_client
 import magic as M
-from functions import CreateDataToken,DatasetDescription
+from shared_components import CreateDataToken,DatasetDescription
 import pandas as pd
 
 class postman(Thread):

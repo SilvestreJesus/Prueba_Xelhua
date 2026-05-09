@@ -1,11 +1,11 @@
-import sys,json
+from shared_components import Sys,json
 import pandas as pd
 import os
 from random import randint
 import logging #logger
 from base64 import b64encode,b64decode
 import importlib
-from . import Trigger
+from shared_components import Trigger
 import tempfile
 
 

@@ -1,11 +1,11 @@
-import sys
+from shared_components import Sys
 import os
 import json
 
 import pandas as pd
 import numpy as np
 from sklearn.experimental import enable_iterative_imputer
-from sklearn.impute import SimpleImputer,IterativeImputer,KNNImputer
+from sklearn.impute from shared_components import SimpleImputer,IterativeImputer,KNNImputer
 
 
 data_path= sys.argv[1] #data path

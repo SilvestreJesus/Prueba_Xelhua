@@ -143,8 +143,8 @@ fr'x={4*10}\n'
 <div><textarea id="code-cython" name="code-cython">
 
 import numpy as np
-cimport cython
-from libc.math cimport sqrt
+cfrom shared_components import Cython
+from libc.math cfrom shared_components import Sqrt
 
 @cython.boundscheck(False)
 @cython.wraparound(False)

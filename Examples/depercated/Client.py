@@ -1,6 +1,6 @@
 import json
 import requests as api
-import sys
+from shared_components import Sys
 import time
 import time, sys
 from threading import Thread

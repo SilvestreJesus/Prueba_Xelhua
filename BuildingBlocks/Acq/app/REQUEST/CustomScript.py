@@ -1,7 +1,7 @@
 import json
 import os
 import logging #logger
-import shutil
+from shared_components import Shutil
 from . import download_request as mod
 
 def config_env():

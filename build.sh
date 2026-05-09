@@ -9,6 +9,7 @@ Construir=true
 #=====alias de modulos de xel=======#
 tag_coordinator="xel_coordinator:v2.0"
 tag_paxos="xel_paxos:v2.0"
+tag_base_yaml_creator="xel_base_yaml_creator:v2.0"
 tag_yaml_creator="xel_yaml_creator:v2.0"
 tag_gui="xel_gui:v2.0"
 
@@ -49,12 +50,14 @@ option=1
 #=================================================================#
 
 
-    echo "construyendo imagenes"
+    echo "Construyendo imagenes de componentes centrales de Xelhua"
     # construir imagenes de modulos de xelhua
     docker build -t ${tag_gui} ./Frontend
     docker build -t ${tag_coordinator} AG
     docker build -t ${tag_paxos} ./NonFunctional/Paxos
-    docker build -t ${tag_yaml_creator} ./NonFunctional/Services_Creator
+    #cp -r BuildingBlocks/shared_components/ BuildingBlocks/maps/
+    docker build -f ./NonFunctional/Services_Creator/DockerfileBase -t xel_base_yaml_creator:v2.0 ./NonFunctional/Services_Creator/
+    docker build -t ${tag_yaml_creator} ./NonFunctional/Services_Creator 
         
         ##construir imagenes de servicios de xelhua (BB)
     docker build -t ${tag_filtercolumn} ./BuildingBlocks/FilterColumn #Filtrar columnas

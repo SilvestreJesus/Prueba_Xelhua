@@ -3,7 +3,7 @@ import plotly.express as px
 import json
 import os
 import pandas as pd
-import sys
+from shared_components import Sys
 
 def validate_att(att): #esta funcion sirve para validar que un argumento viene vacio o no
     if att =="" or att =="-":
