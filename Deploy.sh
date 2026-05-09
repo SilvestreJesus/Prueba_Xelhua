@@ -2,4 +2,4 @@
 export COMPOSE_HTTP_TIMEOUT=200
 
 
-docker-compose up --no-recreate #no elimina contenedores ya existentes
+docker compose -f Xel.yml up --no-recreate #no elimina contenedores ya existentes

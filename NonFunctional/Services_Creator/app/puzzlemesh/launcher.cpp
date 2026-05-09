@@ -39,7 +39,7 @@ void Launcher::start(string mode)
 	}
 	else
 	{
-		compose_command = "docker-compose --log-level ERROR -p " + this->workflow->getName() +
+		compose_command = "docker-compose --log-level ERROR -p " + this->workflow->getName() + " -f " + pwdStr + "/results/" + this->workflow->getWorkdir() + "/docker-compose.yml ";
 						  " -f " + pwdStr + "/results/" + this->workflow->getWorkdir() + "/docker-compose.yml ";
 		up_command = compose_command + " up -d --build";
 		// //search fo replicas

@@ -62,13 +62,25 @@ By default, you don't need to configure Xel to start using it, however, if you n
 
   ## 3.- Deployment
 
+To deploy the project with **Docker Compose**, use the following command:
+
   ```sh
-  docker-compose up -f Xel.yml -d
+  docker-compose -f Xel.yml up -d
   ```
   or to see the lofs...
   ```sh
-  docker-compose up -f Xel.yml
+  docker-compose -f Xel.yml up 
   ```
+To stop the containers that were started, use the following command:
+
+  ```sh
+    docker-compose -f Xel.yml stop
+  ```
+To start containers that already exist but are stopped, use the following command:
+  ```sh
+    docker-compose -f Xel.yml start
+  ```
+
 
 Xelhua can also be deployed in a distributed environment by using [Docker-swarm](https://docs.docker.com/engine/swarm/swarm-tutorial/), for this the following command is used.
 
