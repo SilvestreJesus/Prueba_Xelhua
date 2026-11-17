@@ -46,9 +46,4 @@ datos_prueba_xelhua.csv
 /.env
 /.env.local
 
-/Client/Client.py
-/Client/cliente2/Client.py
-/Frontend/app/includes/clases/class.DB.php
-/Frontend/app/resources/includes/clases/class.DB.php
-/Frontend/app/includes/enviarEmail.php
-/Frontend/app/resources/includes/enviarEmail.php
+
