@@ -1,0 +1,192 @@
+{
+  "version":"v2.0",
+  "env":{
+    "TPS_MANAGER": "http://tps_manager:5000",
+    "API_GATEWAY": "coordinator:5555",
+    "SERVICE_PORT": "80",
+    
+    "STORAGE_OPT":"LOCAL",
+    "MICTLANX_PROTOCOL":"http",
+    "MICTLANX_ROUTERS":"mictlanx-router-0:148.247.201.141:60667"
+  },
+
+  "resources": {
+    "avx": {
+      "image": "xel_activex",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "cleanning": {
+      "image": "xel_bb_data_clean",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "imputation": {
+      "image": "xel_bb_imputation",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "clustering_service": {
+      "image": "xel_bb_clustering",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "fusion": {
+      "image": "xel_bb_fusion",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "correlation": {
+      "image": "xel_bb_correlations",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "join_split": {
+      "image": "xel_bb_data_split",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "charts": {
+      "image": "xel_bb_charts",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "maps": {
+      "image": "xel_bb_maps",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "catalogs": {
+      "image": "xel_bb_catalog",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "regression": {
+      "image": "xel_bb_regressions",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "statistics": {
+      "image": "xel_bb_statistics",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "transform_ds": {
+      "image": "xel_bb_transform",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "preprocessing": {
+      "image": "xel_bb_text_processing",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "Converters": {
+      "image": "xel_bb_converters",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "Acquisition": {
+      "image": "xel_bb_acquisition",
+      "restart": "always",
+      "volumes": ["./localdata/:/home/app/REQUEST/input_data"],
+      "networks": ["service_mesh"],
+      "environment": {
+      },
+      "deploy": {
+        "placement": {
+          "constraints": ["node.role == manager"]
+        }
+      }
+    },
+    "Grobid": {
+      "image": "xel_bb_grobid",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+        "GROBID_URL": "grobid"
+      }
+    },
+    "Glove": {
+      "image": "xel_bb_glove",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "classificators": {
+      "image": "xel_bb_classification_models",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "advanced_maps": {
+      "image": "xel_bb_advanced_map",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    },
+    "reports": {
+      "image": "xel_bb_reports",
+      "restart": "always",
+      "networks": ["service_mesh"],
+      "environment": {
+      }
+    }
+  },
+  "names": {
+    "classificators":"bb_class",
+    "advanced_maps":"bb_advanced_map",
+    "cleanning": "bb_data_clean",
+    "imputation": "bb_imputation",
+    "clustering_service": "bb_clustering",
+    "fusion": "bb_fusion",
+    "correlation": "bb_correlations",
+    "join_split": "bb_data_split",
+    "charts": "bb_charts",
+    "maps": "bb_maps",
+    "catalogs": "bb_catalogs",
+    "regression": "bb_regressions",
+    "statistics": "bb_statistics",
+    "transform_ds": "bb_transform",
+    "preprocessing": "preprocessing",
+    "Converters": "bb_converters",
+    "Acquisition": "bb_acquisition_1",
+    "Grobid": "bb_grobid",
+    "Glove": "bb_glove",
+    "reports": "bb_reports"
+
+  }
+}

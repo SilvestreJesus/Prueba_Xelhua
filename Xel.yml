@@ -1,0 +1,234 @@
+services:
+
+  nginx_lb:
+    image: nginx:1.23-alpine  # Imagen ligera de Nginx
+    container_name: xelhua_nginx_lb
+    volumes:
+      - ./LoadBalancer/nginx.template.conf:/etc/nginx/nginx.template.conf:ro
+      - ./LoadBalancer/docker-entrypoint.sh:/docker-entrypoint.sh:ro
+    environment:
+      - BACKENDS=coordinator:5555,coordinator2:5555
+    ports:
+      - "8085:80"
+    entrypoint: ["/bin/sh", "/docker-entrypoint.sh"]
+    networks:
+      - service_mesh
+
+  xel_gui:  # Graphic user interface
+    image: xel_gui:v2.0
+    container_name: xelhua_gui
+    environment:      
+      XEL_IP: "nginx_lb" #for labs network
+      XEL_PORT: 80 #for labs network
+      GOOGLE_MAPS_KEY: "AIzaSyD_qWZ5Z3tHY5JqXksf19meBOmfAR1Wmw4"
+    ports:
+      - "8080:80"
+    networks:
+      - service_mesh
+    restart: always
+    mem_limit: 500M
+    mem_reservation: 128M
+    cpus: 1
+    deploy: 
+      placement: 
+        constraints: 
+          - node.role == manager
+  
+  coordinator2: # COORDINATOR
+    image: xel_coordinator:v2.0
+    container_name: xelhua_paxos_coordinator2
+    volumes:
+      - ./localdata/LAKE/USERS:/home/app/SUPPLIES/ #Path for user's data
+      - ./localdata/LAKE/SOLUTIONS:/home/app/BACKUPS/ #Path for solutions's Data
+      - ./AG/app/:/home/app/ #for debugging and making changes without build image
+    restart: always
+    networks:
+      - service_mesh
+    env_file:
+      - AG.env
+    mem_limit: 1024M
+    mem_reservation: 128M
+    cpus: 4
+    depends_on:
+      - accepter_1
+      - accepter_2
+      - accepter_3
+    deploy: 
+      placement: 
+        constraints: 
+          - node.role == manager
+
+  coordinator: # COORDINATOR
+    container_name: xelhua_paxos_coordinator
+    image: xel_coordinator:v2.0
+    ports:
+      - "25000:5555" #for develop and to consume xel APIs. Please comment this line on production.
+    volumes:
+      - ./localdata/LAKE/USERS:/home/app/SUPPLIES/ #Path for user's data
+      - ./localdata/LAKE/SOLUTIONS:/home/app/BACKUPS/ #Path for solutions's Data
+      - ./AG/app/:/home/app/ #for debugging and making changes without build image
+    restart: always
+    networks:
+      - service_mesh
+    env_file:
+      - AG.env
+    mem_limit: 1024M
+    mem_reservation: 128M
+    cpus: 4
+    depends_on:
+      - accepter_1
+      - accepter_2
+      - accepter_3
+    deploy: 
+      placement: 
+        constraints: 
+          - node.role == manager
+
+  sdb: # tps manager mongoDB
+    container_name: xelhua_sdb
+    image: mongo:4.4
+    command: mongod --quiet --logpath /dev/null 
+    restart: always
+    environment:
+      data-volume: /data/db
+      MONGO_INITDB_DATABASE: xelhua
+    volumes:
+      - sdb_volume:/data/db
+    networks:
+      - service_mesh 
+    ports: # for development
+      - "27017:27017" #for development
+    mem_limit: 640M
+    mem_reservation: 128M
+    cpus: 1.5
+    deploy: 
+      placement: 
+        constraints: 
+          - node.role == manager
+
+  auth: #Authentication service
+    image: qwerty3435ab/auth:v2.0
+    container_name: xelhua_auth_service
+    depends_on:
+      - db_auth
+    ports:
+      - '2023:80'
+    expose:
+      - "80"
+    networks:
+      - service_mesh
+    environment:
+      DB_USER: "${XELHUA_DB_USER}"
+      DB_PASSWORD: "${XELHUA_DB_PASSWORD}"
+      DB_NAME: "${XELHUA_DB_NAME}"
+      DB_HOST: db_auth
+      DB_PORT: 5432
+      AUTH_PORT: 47011
+      FRONTEND_PORT: 30004
+      SERVER_PORT: 305000
+    restart: always
+
+  db_auth: #Authentication database
+    container_name: xelhua_auth_db
+    image: postgres:12.13
+    expose:
+      - "5432"
+    networks:
+      - service_mesh
+    environment:
+      POSTGRES_DB: "${XELHUA_DB_NAME}"
+      POSTGRES_USER: "${XELHUA_DB_USER}"
+      POSTGRES_PASSWORD: "${XELHUA_DB_PASSWORD}"
+    volumes:
+      - ${XELHUA_PGDATA_PATH:-./localdata/POSTGRES}:/var/lib/postgresql/data
+      - ./NonFunctional/auth/schema-sql/auth.sql:/docker-entrypoint-initdb.d/auth.sql #for init
+    restart: always
+
+###########################################
+############## Deploy service #############
+###########################################
+  services_creator:
+    container_name: xelhua_service_creator
+    image: xel_yaml_creator:v2.0
+    restart: unless-stopped
+    working_dir: /home/app/
+    networks:
+      - service_mesh
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - "./resources.json:/home/app/resources.json"
+      - "./BuildingBlocks:/home/app/BuildingBlocks"
+      - "./build.sh:/home/app/build.sh"
+      - ./NonFunctional/Services_Creator/app/results:/home/app/results
+    entrypoint: python3 server.py
+    environment:
+      FLASK_ENV: development
+      HOST_PATH: /home/app/
+      IMAGES_REPO_URL: 148.247.201.222:31978/
+      IMAGES_REPO: "local"
+      API_KEY: "${XELHUA_API_KEY}"
+    deploy: 
+      placement: 
+        constraints: 
+          - node.role == manager
+
+
+###########################################
+############## PAXOS NETWORK ##############
+###########################################
+
+  accepter_1: # accepter
+    image: xel_paxos:v2.0
+    container_name: xelhua_paxos_accepter1
+    environment:
+      DATABASE_HOST: sdb
+    mem_limit: 640M
+    mem_reservation: 128M
+    cpus: 2
+    restart: always
+    networks:
+      - service_mesh
+    env_file:
+      - AG.env
+
+  accepter_2: # accepter
+    image: xel_paxos:v2.0
+    container_name: xelhua_paxos_accepter2
+    environment:
+      DATABASE_HOST: sdb
+    mem_limit: 640M
+    mem_reservation: 128M
+    cpus: 2
+    restart: always
+    networks:
+      - service_mesh
+    env_file:
+      - AG.env
+
+  accepter_3: # accepter
+    image: xel_paxos:v2.0
+    container_name: xelhua_paxos_accepter3
+    environment:
+      DATABASE_HOST: sdb
+    mem_limit: 640M
+    mem_reservation: 128M
+    cpus: 2
+    restart: always
+    networks:
+      - service_mesh
+    env_file:
+      - AG.env
+
+###########################################
+###########################################
+###########################################
+
+networks: 
+  service_mesh:
+    name: xel_service_mesh
+
+volumes:
+  data-volume:
+  sdb_volume:
+  psql-auth:
+    driver: local

@@ -1,0 +1,54 @@
+localdata/100FilesA.zip
+localdata/100FilesB.zip
+localdata/200Files.zip
+localdata/LAKE
+localdata/DatasetsEntregados
+build_and_indexing.sh
+localimages
+docs/Xelhua - Reporte técnico - V02-1.docx
+Frontend/app/limbo
+AG/app/logs
+**/__pycache__/
+
+/.env
+/.env.local
+
+
+# Datos privados y archivos generados
+.env
+.env.*
+!.env.example
+psql-auth/
+localdata/
+**/__pycache__/
+*.pyc
+*.bak
+*.pid
+*.dump
+AG/app/LOGS/
+NonFunctional/Services_Creator/app/results/
+respaldo_dataclean/
+respaldo_shared_components/
+xelhua_backup_service_creator/
+Xel.local.yml
+datos_prueba_xelhua.csv
+
+# Credenciales privadas
+/AG.env
+
+# Resultados y archivos generados
+/Client/RESULTS/
+/Client/cliente2/RESULTS/
+/NonFunctional/Services_Creator/app/puzzlemesh/cmake-build-debug/
+/AG/app/log/
+
+/AG.env
+/.env
+/.env.local
+
+/Client/Client.py
+/Client/cliente2/Client.py
+/Frontend/app/includes/clases/class.DB.php
+/Frontend/app/resources/includes/clases/class.DB.php
+/Frontend/app/includes/enviarEmail.php
+/Frontend/app/resources/includes/enviarEmail.php

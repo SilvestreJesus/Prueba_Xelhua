@@ -1,0 +1,310 @@
+/* === card component ====== 
+ * Variation of the panel component
+ * version 2018.10.30
+ * https://codepen.io/jstneg/pen/EVKYZj
+ max-width: 221px; min-width: 221px;; max-height: 70px; min-height: 70px;
+ */
+.card{ background: radial-gradient( circle farthest-corner at 1.5% 1.4%, rgba(159,227,255,.135) 0%, rgba(255,177,219,.135) 100.2% ); border: 1px solid transparent; border-radius: 6px; max-width: 160px; min-width: 160px; max-height: 35px; min-height: 35px; }
+.card > .card-link{ color: #333; }
+.card > .card-link:hover{  text-decoration: none; }
+.card > .card-link .card-img img{ border-radius: 6px 6px 0 0; }
+.card .card-img{ position: relative; padding: 0; display: table; }
+.card .card-img .card-caption{
+  position: absolute;
+  right: 0;
+  bottom: 16px;
+  left: 0;
+  pad: 5px;
+}
+.card .card-body{ /*display: table*/ font-size: smaller; max-height: 50px;overflow-y: auto; width: 100%;}
+.card .card-header{ font-size: x-small ;border-radius: 6px 6px 0 0; border-bottom: white; padding: .2em ; padding-bottom: .05em; font-family: 'Montserrat',sans-serif;}
+.card .card-footer{ border-radius: 0 0 6px 6px; padding: 8px; }
+.card .card-left{ position: relative; float: left; padding: 0 0 8px 0; }
+.card .card-right{ position: relative; float: left; padding: 8px 0 0 0; }
+.card .card-body h1:first-child,
+.card .card-body h2:first-child,
+.card .card-body h3:first-child, 
+.card .card-body h4:first-child,
+.card .card-body .h1,
+.card .card-body .h2,
+.card .card-body .h3, 
+.card .card-body .h4{ margin-top: 0; }
+.card .card-body .heading{ display: block;  }
+.card .card-body .heading:last-child{ margin-bottom: 0; }
+
+.card .card-body .lead{ text-align: center; }
+
+@media( min-width: 768px ){
+  .card .card-left{ float: left; padding: 0 8px 0 0; }
+  .card .card-right{ float: left; padding: 0 0 0 8px; }
+    
+  .card .card-4-8 .card-left{ width: 33.33333333%; }
+  .card .card-4-8 .card-right{ width: 66.66666667%; }
+
+  .card .card-5-7 .card-left{ width: 41.66666667%; }
+  .card .card-5-7 .card-right{ width: 58.33333333%; }
+  
+  .card .card-6-6 .card-left{ width: 50%; }
+  .card .card-6-6 .card-right{ width: 50%; }
+  
+  .card .card-7-5 .card-left{ width: 58.33333333%; }
+  .card .card-7-5 .card-right{ width: 41.66666667%; }
+  
+  .card .card-8-4 .card-left{ width: 66.66666667%; }
+  .card .card-8-4 .card-right{ width: 33.33333333%; }
+}
+
+/* -- default theme ------ */
+.card-default{ 
+  border-color: #ddd;
+  background-color: #fff;
+  margin-bottom: 24px;
+}
+.card-default > .card-header,
+.card-default > .card-footer{ color: #333;  /* background-color:rgb(255, 255, 255);*/ }
+.card-default > .card-header{ border-bottom: 1px solid #ddd; padding: 8px; }
+.card-default > .card-footer{ border-top: 1px solid #ddd; padding: 8px; }
+.card-default > .card-body{  }
+.card-default > .card-img:first-child img{ border-radius: 6px 6px 0 0; }
+.card-default > .card-left{ padding-right: 4px; }
+.card-default > .card-right{ padding-left: 4px; }
+.card-default p:last-child{ margin-bottom: 0; }
+.card-default .card-caption { color: #fff; text-align: center; text-transform: uppercase; }
+
+
+/* -- price theme ------ */
+.card-price{ border-color: #999;  /* background-color:rgb(255, 255, 255);*/; margin-bottom: 24px; }
+.card-price > .card-heading,
+.card-price > .card-footer{ color: #333; background-color: #fdfdfd; }
+.card-price > .card-heading{ border-bottom: 1px solid #ddd; padding: 8px; }
+.card-price > .card-footer{ border-top: 1px solid #ddd; padding: 8px; }
+.card-price > .card-img:first-child img{ border-radius: 6px 6px 0 0; }
+.card-price > .card-left{ padding-right: 4px; }
+.card-price > .card-right{ padding-left: 4px; }
+.card-price .card-caption { color: #fff; text-align: center; text-transform: uppercase; }
+.card-price p:last-child{ margin-bottom: 0; }
+
+.card-price .price{ 
+  text-align: center; 
+  color: #337ab7; 
+  font-size: 3em; 
+  text-transform: uppercase;
+  line-height: 0.7em; 
+  margin: 24px 0 16px;
+}
+.card-price .price small{ font-size: 0.4em; color: #66a5da; }
+.card-price .details{ list-style: none; margin-bottom: 24px; padding: 0 18px; }
+.card-price .details li{ text-align: center; margin-bottom: 8px; }
+.card-price .buy-now{ text-transform: uppercase; }
+.card-price table .price{ font-size: 1.2em; font-weight: 700; text-align: left; }
+.card-price table .note{ color: #666; font-size: 0.8em; }
+
+
+.fa-pen-square:hover {
+  color: rgb(220, 165, 234);
+}
+.fa-search:hover {
+  color: rgb(220, 165, 234);
+}
+.fa-map-marked-alt:hover {
+  color: rgb(220, 165, 234);
+}
+.fa-cloud-download-alt:hover {
+  color: rgb(220, 165, 234);
+}
+.fa-chart-piet:hover {
+  color: rgb(220, 165, 234);
+}
+
+.react {
+  display: block;
+  margin-top: 130px;
+}
+.react-me {
+  font-family: Helvetica;
+  cursor: pointer;
+  display: block;
+  position: relative;
+}
+.react-me .inner {
+  position: absolute;
+  bottom: 100%;
+  padding-bottom: 15px;
+}
+.react-me:hover .react-box, .react-box.hovered{
+  visibility: visible;
+  height: 4em;
+  transform: height 200ms ease-in;
+}
+
+.react-me:hover .react-box .react-item, .react-box.hovered .react-item{
+  transform: scale(1);
+  transition-duration: 800ms;
+  margin-left: 10px;
+}
+
+
+.react-box {
+  list-style-type: none;
+  margin: 0;
+  position: fixed;
+  display: block;
+  visibility: hidden;
+  padding: 0 5px;
+  border-radius: 150px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  min-width: 10em;
+  max-width: 30em;
+  height: 0;
+  transition: height 200ms ease-out;
+
+}
+.react-box div {
+  margin: 0;
+  padding: 0;
+}
+.react-box .react-item {
+  display: inline-flex;
+  transform: scale(0.2) translateY(0);
+  transition: transform 800ms ease;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-content: space-between;
+  flex-direction: row;
+  padding-top: 22px;
+  font-size: large;
+  margin-left: 10px;
+  padding-left: 0.01em;
+
+}
+
+.react-box .react-item:before {
+  content: attr(data-hover);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  padding: 0 8px;
+  border-radius: 20px;
+  font-family: Helvetica, Verdana, Arial;
+  font-weight: bold;
+  line-height: 20px;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.76);
+  display: none;
+}
+.react-box .react-item:hover {
+  transform: scale(1) translateY(-25px);
+  transition: transform 200ms ease;
+}
+.react-box .react-item:hover:before {
+  display: inline-block;
+}
+
+.fa-gradient {
+  color: rgb(0, 176, 146)
+}
+
+.modal-header{
+  background: radial-gradient( circle farthest-corner at 1.5% 1.4%, #17a2b857 0%, rgb(125 10 66 / 24%) 80% );
+  border-bottom:0px;
+}
+
+@keyframes bye {
+  0% {
+    transform: scale(1.5) rotate(1deg)
+  }  
+  20% {
+    transform: scale(2) rotate(-1deg)
+  }  
+  60% {
+    transform: scale(.2) rotate(-2deg)
+  }
+  100% {
+    transform: scale(0) rotate(0)
+  }
+}
+
+
+@keyframes addbox {
+  0% {
+    transform: scale(1) rotate(1deg)
+  }  
+  1% {
+    transform: scale(.7) rotate(-1deg)
+  }  
+  5% {
+    transform: scale(.3) rotate(1deg)
+  }
+  100% {
+    transform: scale(1) rotate(0)
+  }
+}
+
+@keyframes begindrag {
+  0% {
+    transform: rotate(0deg)
+  }
+  10% {
+    transform: rotate(-8deg)
+  }
+  30% {
+    transform: rotate(6deg)
+  }
+  55% {
+    transform: rotate(-3deg)
+  }
+  80% {
+    transform: rotate(1deg)
+  }
+  100% {
+    transform: rotate(-1deg)
+  }
+}
+
+.wrapper{
+  user-select:none;
+}
+
+.drop {
+  float:right;
+  position: relative;
+  margin: 10px;
+  width: 400px;
+  height: 200px;
+  border: 5px dashed #ff5722;
+  border-radius:15px;
+  background: white;
+  transition: background .4s ease;
+}
+
+
+
+.dragging {
+  animation: begindrag 2s ease forwards;
+}
+
+.addbox {
+  opacity: 1;
+  transition: opacity .5s ease;
+  animation: addbox 700ms ease forwards;
+}
+
+.bye {
+  opacity: 1;
+  transition: opacity .5s ease;
+  animation: bye 500ms ease forwards;
+}
+
+.dragtext,.droptext {
+  font-family:'Helvetica';
+  font-weight: 900;
+  color:#FFF;
+  font-size:50px;
+  text-align:center;
+  line-height: 190px;
+}

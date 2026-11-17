@@ -1,0 +1,27 @@
+FROM python:3.8-slim-bullseye
+
+WORKDIR /home/
+
+#requierments for the mesh:
+RUN apt-get update && apt-get install -y libmagic1 && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt --user 
+#requierments for the app:
+RUN pip install statsmodels --user
+RUN pip install plotly --user
+RUN pip install kaleido --user
+RUN pip install scipy --user
+RUN pip install scikit-learn==1.0.1
+RUN pip install bar-chart-race
+RUN pip install pyjanitor==0.23.1
+
+RUN apt-get update --fix-missing
+RUN apt-get install -y ffmpeg
+RUN pip install pivottablejs
+RUN pip install ipython
+
+COPY ./app app
+WORKDIR /home/app
+
+ENTRYPOINT ["python"]
+CMD ["S.py"]
