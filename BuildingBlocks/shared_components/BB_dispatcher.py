@@ -13,9 +13,9 @@ NOTAS DE ARQUITECTURA (REFACCIÓN 2026):
 """
 
 import logging
-from shared_components import Socket
+import socket
 import os
-from shared_components import Sys
+import sys
 import pickle
 import json
 import pandas as pd

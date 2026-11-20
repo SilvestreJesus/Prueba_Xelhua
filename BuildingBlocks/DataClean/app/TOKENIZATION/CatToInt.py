@@ -1,4 +1,4 @@
-from shared_components import Sys
+import sys
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder

@@ -16,9 +16,9 @@ NOTAS DE ARQUITECTURA (REFACCIÓN 2026):
 """
 
 import logging
-from shared_components import Socket
+import socket
 import os
-from shared_components import Sys
+import sys
 import pickle
 import json
 import pandas as pd
@@ -27,7 +27,7 @@ import tempfile
 import base64
 import multiprocessing as mp
 import gc
-from shared_components import Shutil
+import shutil
 
 # --- Importaciones Centralizadas del Core ---
 from shared_components import C
@@ -112,7 +112,7 @@ def ClientProcess(metadata, data_acq_time):
     TIME_TRANSFORM = time.time()
     if apply_pattern:
         LOGER.info("...### Creating Pattern to ###... %s" % id_service)
-        CP = Client_pattern.client_pattern(control_number, id_service, LOGER=LOGER, POSTMAN=AG, Monitor_Threads=TH_MONITOR)
+        CP = ClientPattern.client_pattern(control_number, id_service, LOGER=LOGER, POSTMAN=AG, Monitor_Threads=TH_MONITOR)
         result = CP.run_pattern(pattern, data, auth, DAG)
         result["metadata"] = {"product_name": "list of products by level"}
     else:

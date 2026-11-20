@@ -13,7 +13,7 @@ NOTAS DE ARQUITECTURA (REFACCIÓN 2026):
 -------------------------------------------------------------------------------
 """
 
-from shared_components import Sys
+import sys
 import json
 import pandas as pd
 import os
@@ -24,7 +24,7 @@ import tempfile
 from zipfile import ZipFile, ZIP_DEFLATED
 from os.path import basename
 import time
-from shared_components import Csv
+import csv
 
 # Configuración del Logger para rastreo de operaciones
 LOGER = logging.getLogger()

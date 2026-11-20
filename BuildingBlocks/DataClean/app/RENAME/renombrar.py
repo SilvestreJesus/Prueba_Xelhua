@@ -3,7 +3,7 @@ import argparse
 import re
 import pandas as pd
 import numpy as np
-from distutils.util from shared_components import Strtobool
+from distutils.util import strtobool
 
 def renombrar (datos_entrada, lista_clases, columna_clases=None):
     

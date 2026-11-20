@@ -13,8 +13,8 @@ NOTAS DE ARQUITECTURA (REFACCIÓN 2026):
 -------------------------------------------------------------------------------
 """
 
-from shared_components import Socket
-from shared_components import Sys
+import socket
+import sys
 import pickle
 import json
 import requests as api # Reservado para peticiones API REST tradicionales

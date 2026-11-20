@@ -14,7 +14,7 @@ NOTAS DE ARQUITECTURA (REFACCIÓN 2026):
 -------------------------------------------------------------------------------
 """
 
-from shared_components import Sys
+import sys
 import json
 import pandas as pd
 import os
@@ -60,7 +60,9 @@ def blackbox(data, params, POSTMAN=None):
     
     # --- CONFIGURACIÓN DINÁMICA ---
     # Se localiza la carpeta del bloque actual para leer su ADN (AppConfig.json)
-    ACTUAL_PATH = get_caller_dir()
+    ACTUAL_PATH = os.path.abspath(
+        params.get('APP_DIR') or get_caller_dir()
+    ).rstrip('/') + '/'
     try:
         with open(ACTUAL_PATH + 'AppConfig.json') as json_file:
             App_configurations = json.load(json_file)

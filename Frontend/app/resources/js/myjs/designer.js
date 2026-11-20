@@ -132,30 +132,83 @@ $(document).ready(function () {
         $('#inputImport').trigger('click');
     });
     $('#inputImport').change((e) => {
-        name = document.getElementById('inputImport').files[0].name;
+        const input = document.getElementById('inputImport');
+        const files = input.files;
+        if (!files || files.length === 0) return false;
 
-        var files = document.getElementById('inputImport').files;
-        if(files.length <= 0) return false;
+        const file = files.item(0);
+        const fr = new FileReader();
 
-        var fr = new FileReader();
-        fr.onload = (e) => {
-            // FileReader result object. Containing the file text.
-            var result = JSON.parse(e.target.result);
-            // Update current data:
-            // Change dataObject with the imported data.
-            dataObject = result.dataobject;
-            // Update the count of elements on canvas to keep adding more boxes.
-            canvasElementsCount = result.lastBoxId;
-            // Use Flowy import to add the boxes to the canvas.
-            flowy.import(result.metadata.frontend);
-            // load metadata into page
-            Metadata_assign(result.metadata)
-            
-            currentLayout = [...flowy.output().blockarr]
-            $(".block-hoverinfo").hoverIntent( confighover )
-            OpenOptionsBox()
-        }
-        fr.readAsText(files.item(0));
+        fr.onload = (event) => {
+            try {
+                const result = JSON.parse(event.target.result);
+
+                // Formato actual: metadata.frontend contiene el diseño de Flowy.
+                // Formato anterior: html, blockarr y blocks vienen en la raíz.
+                let frontend = null;
+                if (result && result.metadata && result.metadata.frontend) {
+                    frontend = result.metadata.frontend;
+                } else if (result && typeof result.html === 'string' &&
+                           Array.isArray(result.blockarr) && result.blocks !== undefined) {
+                    frontend = {
+                        html: result.html,
+                        blockarr: result.blockarr,
+                        blocks: result.blocks
+                    };
+                }
+
+                if (!result || !result.dataobject || !frontend ||
+                    typeof frontend.html !== 'string' ||
+                    !Array.isArray(frontend.blockarr) || frontend.blocks === undefined) {
+                    alert('El archivo no contiene un diseño válido para importar en Xelhúa.');
+                    return;
+                }
+
+                // Actualizar el grafo y restaurar su representación visual.
+                flowy.import(frontend);
+                dataObject = result.dataobject;
+                const lastId = Number(result.lastBoxId);
+                const metaId = result.metadata && Number(result.metadata.canvasElementsCount);
+                canvasElementsCount = Number.isFinite(lastId) && lastId >= 0
+                    ? lastId
+                    : (Number.isFinite(metaId) && metaId >= 0 ? metaId : frontend.blockarr.length);
+
+                if (result.metadata && result.metadata.datasource &&
+                    result.metadata.datasource.filename) {
+                    // El formato actual puede restaurar también el origen de datos.
+                    Metadata_assign(result.metadata);
+                } else {
+                    // Los ejemplos antiguos no incluyen metadata ni datasource.
+                    // No llamar Metadata_assign: intentaría consultar un filename inexistente.
+                    const metadata = result.metadata || {};
+                    const defaultName = file.name.replace(/\.json$/i, '');
+                    $('#modal_save-solutions-form-name').val(metadata.name || defaultName);
+                    $('#modal_save-solutions-form-desc').val(metadata.desc || '');
+                    $('#modal_save-solutions-form-tags').val(
+                        Array.isArray(metadata.tags) ? metadata.tags.join(',') : (metadata.tags || '')
+                    );
+                    Set_Tokensolution('');
+                    DATA_WORKFLOW = { data: {}, type: '' };
+                    ROOT_METADATA = {};
+                }
+
+                currentLayout = [...flowy.output().blockarr];
+                $('.block-hoverinfo').hoverIntent(confighover);
+                OpenOptionsBox();
+                console.log('Grafo importado:', file.name);
+            } catch (error) {
+                console.error('Error al importar el grafo:', error);
+                alert('No se pudo importar el archivo. Revisa los errores de la consola (F12).');
+            } finally {
+                // Permite seleccionar nuevamente el mismo JSON.
+                input.value = '';
+            }
+        };
+        fr.onerror = () => {
+            alert('No se pudo leer el archivo seleccionado.');
+            input.value = '';
+        };
+        fr.readAsText(file);
     });
     // Export using the flowy output, which contains the data about
     // the position and html data of the boxes.

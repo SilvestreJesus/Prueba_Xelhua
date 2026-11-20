@@ -118,9 +118,9 @@ services:
     networks:
       - service_mesh
     environment:
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: auth
+      DB_USER: "${XELHUA_DB_USER}"
+      DB_PASSWORD: "${XELHUA_DB_PASSWORD}"
+      DB_NAME: "${XELHUA_DB_NAME}"
       DB_HOST: db_auth
       DB_PORT: 5432
       AUTH_PORT: 47011
@@ -130,17 +130,17 @@ services:
 
   db_auth: #Authentication database
     container_name: xelhua_auth_db
-    image: qwerty3435ab/auth_db:v2.0
+    image: postgres:12.13
     expose:
       - "5432"
     networks:
       - service_mesh
     environment:
-      POSTGRES_DB: auth
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: "${XELHUA_DB_NAME}"
+      POSTGRES_USER: "${XELHUA_DB_USER}"
+      POSTGRES_PASSWORD: "${XELHUA_DB_PASSWORD}"
     volumes:
-      - ./psql-auth:/var/lib/postgresql/data
+      - ../xelhua-respaldo-postgres/psql-auth-produccion:/var/lib/postgresql/data
       - ./NonFunctional/auth/schema-sql/auth.sql:/docker-entrypoint-initdb.d/auth.sql #for init
     restart: always
 
@@ -159,13 +159,14 @@ services:
       - "./resources.json:/home/app/resources.json"
       - "./BuildingBlocks:/home/app/BuildingBlocks"
       - "./build.sh:/home/app/build.sh"
+      - ./NonFunctional/Services_Creator/app/results:/home/app/results
     entrypoint: python3 server.py
     environment:
       FLASK_ENV: development
       HOST_PATH: /home/app/
       IMAGES_REPO_URL: 148.247.201.222:31978/
       IMAGES_REPO: "local"
-      API_KEY: 9aa491c85508cfeead30c569c88c8f26e3881792a3f158a323ee9ac6150ab1cd
+      API_KEY: "${XELHUA_API_KEY}"
     deploy: 
       placement: 
         constraints: 

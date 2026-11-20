@@ -64,7 +64,7 @@ option=1
     docker build -t ${tag_fusion} ./BuildingBlocks/Fusion #Fusion
     docker build -t ${tag_correlations} ./BuildingBlocks/Correlations
     docker build -t ${tag_data_split} ./BuildingBlocks/DataSplit
-    docker build -t ${tag_data_clean} ./BuildingBlocks/DataClean
+    docker build -f ./BuildingBlocks/DataClean/Dockerfile.prueba -t ${tag_data_clean} ./BuildingBlocks
     docker build -t ${tag_imputation} ./BuildingBlocks/Imputation
     docker build -t ${tag_charts} ./BuildingBlocks/graphics
     docker build -t ${tag_maps} ./BuildingBlocks/maps

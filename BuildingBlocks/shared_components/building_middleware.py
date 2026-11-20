@@ -14,7 +14,7 @@ NOTAS DE ARQUITECTURA (REFACCIÓN 2026):
 -------------------------------------------------------------------------------
 """
 
-from shared_components import Sys
+import sys
 import os
 import json
 import pandas as pd
@@ -84,6 +84,7 @@ def middleware(data, actions, workParams, LOGER=LOG, ENV=None, POSTMAN=None):
                 
                 params = workParams.get(app, {}) 
                 params['ENV'] = ENV
+                params['APP_DIR'] = os.path.join(os.getcwd(), app)
 
                 LOGER.info("RUNNING BLACKBOX FOR: %s" % app)
                 

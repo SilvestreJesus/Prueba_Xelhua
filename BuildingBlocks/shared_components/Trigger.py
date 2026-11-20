@@ -14,26 +14,23 @@ NOTAS DE ARQUITECTURA (REFACCIÓN 2026):
 -------------------------------------------------------------------------------
 """
 
-from shared_components import Sys
+import sys
 import json
 import pandas as pd
 import os
 from random import randint
 import logging
 import importlib
-from shared_components import Shutil
+import importlib.util
+import shutil
 import tempfile
 import time
-from shared_components import Subprocess
+import subprocess
 import multiprocessing as mp
 import inspect
 
 # Importaciones centralizadas
 from shared_components import utils
-try:
-    from shared_components  import CustomScript
-except ImportError:
-    from shared_components import CustomScript
 
 logging.basicConfig(level=logging.INFO)
 LOGER = logging.getLogger()
@@ -99,7 +96,21 @@ def execute(params, AppConfig, POSTMAN=None):
     Returns:
         dict: Estructura con el estado final y los metadatos de los resultados.
     """
-    ACTUAL_PATH = get_caller_dir()
+    ACTUAL_PATH = os.path.abspath(
+        params.get('APP_DIR') or get_caller_dir()
+    ).rstrip('/') + '/'
+
+    script_path = os.path.join(ACTUAL_PATH, 'CustomScript.py')
+    if not os.path.isfile(script_path):
+        raise FileNotFoundError(
+            f'CustomScript no encontrado: {script_path}'
+        )
+
+    spec = importlib.util.spec_from_file_location(
+        'xelhua_dataclean_customscript', script_path
+    )
+    CustomScript = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(CustomScript)
     
     RESERVED_PARAMS = {
         "SOURCE": params['BBOX_INPUT_PATH'] + params['BBOX_INPUT_NAMEFILE'],

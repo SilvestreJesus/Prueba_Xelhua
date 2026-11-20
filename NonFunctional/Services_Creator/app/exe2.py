@@ -29,7 +29,8 @@ def remove(id):
         for matching_folder in matching_folders:
             file_location = matching_folder+"/docker-compose.yml"
             #LOGER.error(file_location)
-            os.system('docker-compose -p '+matching_folder+' -f '+file_location+' stop')
-            os.system('docker-compose -p '+matching_folder+' -f '+file_location+' down')
+            project_name = os.path.basename(matching_folder)
+            os.system('docker-compose -p '+project_name+' -f '+file_location+' stop')
+            os.system('docker-compose -p '+project_name+' -f '+file_location+' down')
         return True
     return False

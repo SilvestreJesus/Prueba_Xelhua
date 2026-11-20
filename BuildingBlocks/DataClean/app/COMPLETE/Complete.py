@@ -1,10 +1,10 @@
-from shared_components import Sys
+import sys
 import os
 import json
 
 import pandas as pd
 import numpy as np
-from scipy from shared_components import Stats
+from scipy import stats
 import janitor
 
 

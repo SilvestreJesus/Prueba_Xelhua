@@ -9,3 +9,6 @@ docs/Xelhua - Reporte técnico - V02-1.docx
 Frontend/app/limbo
 AG/app/logs
 **/__pycache__/
+
+/.env
+/.env.local
